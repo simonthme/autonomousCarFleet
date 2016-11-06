@@ -17,5 +17,22 @@
     "mongoose": "^4.6.6",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.0"
-  }
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node"
+    ],
+    "space": 2,
+    "rules": {
+      "max-len": [
+        "error",
+        80,
+        2
+      ]
+    }
+  },
+  "ignores" : [
+    "Gruntflie.js"
+  ]
 }
