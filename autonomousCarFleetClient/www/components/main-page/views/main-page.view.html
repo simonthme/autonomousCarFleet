@@ -1,0 +1,28 @@
+<div>
+<div class="navbar navbar-default homeBar">
+    <div class="navbar-header">
+        <div class="navbar-brand appTitle">AUTONOMOUS CAR FLEET</div>
+    </div>
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">New trip</button>
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">New Car</button>
+</div>
+    <section class="panel panel-default carDashboard">
+        <div class="panel-heading">
+            <h1>ALL CARS IN FLEET</h1>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber" class="well">
+                <input type="checkbox">
+                <label>{{carTrip.name}}</label>
+                <span>
+                   <label>Current trip: </label>
+                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} -- already done {{carTrip.timeDone}} minutes</span>
+                </span>
+            </div>
+        </div>
+    </section>
+    <div id="mapView">
+        <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="12" map>
+        </div>
+    </div>
+</div>

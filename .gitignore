@@ -1,2 +1,5 @@
 .idea/
 /npm-debug.log
+/autonomousCarFleetClient/bower_components/
+autonomousCarFleetClient/bower_components/
+autonomousCarFleetClient/node_modules/

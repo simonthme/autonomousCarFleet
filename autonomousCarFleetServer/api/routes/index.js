@@ -1,18 +1,23 @@
 /**
  * Created by simonthome on 06/11/2016.
  */
+'use strict';
 const router = require('express').Router();
 
 const config = require('../../config/config');
 const authRoutes = require('./client/authentication')(router);
 const Account = require('../model/account');
+const carManageRoutes = require('./client/carManage')(router);
+const tripManageRoutes = require('./client/tripManage')(router);
+const jwt = require('jwt-simple');
 
 module.exports = (function () {
 
 
-  var getToken = function (headers) {
+  const getToken = function (headers) {
     if (headers && headers.authorization) {
-      var parted = headers.authorization.split(' ');
+      const parted = headers.authorization.split(' ');
+      console.log(parted);
       if (parted.length === 2) {
         return parted[1];
       } else {
@@ -28,18 +33,19 @@ module.exports = (function () {
     if (req.path == '/login' || req.path == '/register') {
       return next();
     }
-    var token = getToken(req.headers);
+    const token = getToken(req.headers);
     if (token) {
-      var decoded = jwt.decode(token, config.constant.jwtSecret);
+      console.log(token);
+      const decoded = jwt.decode(token, config.constant.jwtSecret);
       console.log('requete de ' + decoded.userName);
       Account.findOne({
         userName: decoded.userName
       }, function(err, account) {
         if (err) throw err;
         if (!account) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+          return res.status(403).send({success: false, msg: 'Authentication failed. Account not found.'});
         } else {
-          req.header.userId = account._id;
+          req.header.accountId = account._id;
           next();
         }
       });
@@ -49,6 +55,8 @@ module.exports = (function () {
   });
 
   router.use('/', authRoutes);
+  router.use('/car', carManageRoutes);
+  router.use('/trip', tripManageRoutes);
 
   return router;
 })();

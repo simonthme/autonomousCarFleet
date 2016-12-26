@@ -1,0 +1,15 @@
+{
+  "name": "Felix-web",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular-ui-router": "^0.3.2",
+    "bootstrap": "^3.3.7",
+    "angular-google-places-autocomplete": "^0.2.7",
+    "components-font-awesome": "^4.7.0",
+    "angular-bootstrap": "^2.3.1",
+    "lodash": "^4.17.3"
+  },
+  "devDependencies": {
+    "angular": "1.6.0"
+  }
+}

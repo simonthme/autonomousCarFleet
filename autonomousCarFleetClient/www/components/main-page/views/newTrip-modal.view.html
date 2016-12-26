@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h1>Trip reservation</h1>
+</div>
+<div class="modal-body">
+    <div>
+        <label>Departure : </label>
+        <input class="form-control" g-places-autocomplete options="autocompleteOptions"
+               ng-model="trip.departureAddress"/>
+        <label>Destination : </label>
+        <input class="form-control" g-places-autocomplete options="autocompleteOptions" ng-model="trip.arrivalAddress"/>
+    </div>
+    <label>Date : </label>
+    <div class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="trip.date"
+               is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"
+               alt-input-formats="altInputFormats"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+    </div>
+    <label>Time:</label>
+    <div uib-timepicker ng-model="trip.time" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
+    <div>
+        <form name="selectCarForm">
+            <label>Car Selection:</label>
+            <select name="selectCar" id="repeatSelect" ng-model="selectedCar">
+                <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
+            </select>
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="addTrip()">NEW RESERVATION</button>
+</div>

@@ -17,14 +17,14 @@ const methods = {
 };
 
 module.exports = passport => {
-  var opts = {};
+  let opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
   opts.secretOrKey = config.constant.jwtSecret;
   passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
     methods.findOne(jwt_payload.sub)
       .then(account => {
         if (account) {
-          done(null, user);
+          done(null, account);
         } else {
           done(null, false);
         }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html ng-app="starter">
+<head>
+    <meta charset="utf-8">
+    <title>Autonomous Car Fleet</title>
+    <!-- bower:css -->
+
+    <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../bower_components/angular-google-places-autocomplete/src/autocomplete.css">
+
+
+    <!--<link rel="stylesheet" href="../bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css">-->
+    <!-- endinject -->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/mainpage.css">
+    <!-- endinject -->
+
+    <!-- bower:js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular-google-places-autocomplete/src/autocomplete.js"></script>
+
+
+    <!-- endinject -->
+
+    <!-- inject:js -->
+    <script src="components/routes.js"></script>
+    <script src="components/index.js"></script>
+    <script src="components/login/controller/login.controller.js"></script>
+    <script src="components/main-page/controller/main-page.controller.js"></script>
+    <script src="assets/config/constants.js"></script>
+    <script src="components/login/services/api.service.js"></script>
+    <script src="components/login/services/localStorage.service.js"></script>
+    <script src="components/register/controller/register.controller.js"></script>
+    <script src="components/register/directives/password.directive.js"></script>
+    <script src="components/main-page/directives/map.directive.js"></script>
+
+    <!-- endinject -->
+
+    <!-- AUTOCOMPLETE -->
+
+
+    <!-- STRIPE -->
+    <!-- GOOGLE -->
+
+</head>
+<body>
+<!--<div id="map"></div>-->
+<!--<script type="text/javascript">-->
+
+  <!--var map;-->
+  <!--function initMap() {-->
+    <!--map = new google.maps.Map(document.getElementById('map'), {-->
+      <!--center: {lat: -34.397, lng: 150.644},-->
+      <!--zoom: 8-->
+    <!--});-->
+  <!--}-->
+
+<!--</script>-->
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAYbI4CKn0qlTjnLh92O-H3Ad8UzD4elcY"></script>
+
+
+<div class="container">
+    <div class="viewContainer" ui-view></div>
+
+</div>
+
+<!-- endbuild -->
+</body>
+</html>

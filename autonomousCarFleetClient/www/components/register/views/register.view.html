@@ -1,0 +1,35 @@
+<div>
+    <form name="registerForm" class="registerForm" novalidate="">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.name.$invalid && !registerForm.name.$pristine}">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <input class= "form-control" type="text" name="name"  placeholder="Name"  required ng-model="account.accountName"/>
+            <p ng-show="registerForm.name.$invalid && !registerForm.name.$pristine" class="help-block">Please enter a valid name.</p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.username.$invalid && !registerForm.username.$pristine}">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <input class= "form-control" type="text" name="username"  placeholder="Username"  required ng-model="account.userName"/>
+            <p ng-show="registerForm.username.$invalid && !registerForm.username.$pristine" class="help-block">Please enter a valid username.</p>
+        </div>
+        <div id="registerPassword" class="form-group" ng-class="{ 'has-error' : registerForm.password.$invalid && !registerForm.password.$pristine}">
+            <i class="fa fa-lock icon-login-lock" aria-hidden="true"></i>
+            <input class= "form-control" type="password" name="password" placeholder="Password"  ng-minlength="5" ng-maxlength="15" required ng-model="account.password"/>
+            <p ng-show="registerForm.password.$invalid && !registerForm.password.$pristine" class="help-block">Please enter a valid password.</p>
+        </div>
+        <div class="form-group" ng-class="{'has-error' : registerForm.confirmPassword.$invalid && !registerForm.confirmPassword.$pristine}">
+            <i class="fa fa-lock icon-signUp-lock2" aria-hidden="true"></i>
+            <input class= "form-control" compare-to="account.password" type="password" name="confirmPassword" call="confirmPassword" placeholder="Confirm password" ng-model="account.confirmPassword" ng-minlength="5" ng-maxlength="20" required/>
+            <p ng-show="registerForm.confirmPassword.$invalid && !registerForm.confirmPassword.$pristine" class="help-block">Different passwords.</p>
+        </div>
+        <div id="registerSubmit">
+            <input class="btn btn-success" type="submit" id="registerButton" ng-click="register(registerForm.$valid)" value="CREATE ACCOUNT"/>
+        </div>
+        <div id="signupConnexion">
+            <p id="signupConnexionText">Or <a ui-sref="login">Log in.</a></p>
+        </div>
+    </form>
+
+</div>
+<div data-ng-animate="'custom'" >
+    <div uib-alert ng-repeat="alert in registerAlerts" dismiss-on-timeout="5000" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+</div>
+</div>

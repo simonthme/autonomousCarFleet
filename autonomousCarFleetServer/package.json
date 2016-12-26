@@ -4,7 +4,8 @@
   "description": "package JSON server",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,9 +13,12 @@
     "bcrypt-as-promised": "^1.1.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
+    "google-distance": "^1.0.1",
     "jwt-simple": "latest",
     "mongoose": "^4.6.6",
+    "mongoose-auto-increment": "^5.0.1",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.0"
   },
@@ -29,10 +33,16 @@
         "error",
         80,
         2
+      ],
+      "new-cap": [
+        "error",
+        {
+          "capIsNewExceptionPattern": "Router"
+        }
       ]
     }
   },
-  "ignores" : [
+  "ignores": [
     "Gruntflie.js"
   ]
 }

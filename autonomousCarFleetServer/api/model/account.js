@@ -15,7 +15,7 @@ const account = new mongoose.Schema({
     type: String,
     required: true
   },
-  creationDate: Number,
+  creationDate: Date,
 });
 
 const methods = {

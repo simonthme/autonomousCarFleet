@@ -11,15 +11,20 @@ const config = require('./config/config');
 const passport = require('passport');
 const jwt = require('jwt-simple');
 const routes = require('./api/routes/index');
+const autoIncrement = require('mongoose-auto-increment');
+const cors = require('cors');
 
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(config.constant.mongoUrl)
+const connection = mongoose.connect(config.constant.mongoUrl)
   .then(console.log('Connection OK !!'))
   .catch(err => console.log('Connection ERROR !!' + err));
 
+app.use(cors());
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
 
 app.use(passport.initialize());
 require('./config/passport')(passport);
