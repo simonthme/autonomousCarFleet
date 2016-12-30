@@ -1,25 +1,30 @@
-<div>
-    <form name="loginForm" class="loginForm" novalidate="">
-        <div class="form-group loginInput" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine}">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <input class= "form-control" type="text" name="username"  placeholder="Username"  required ng-model="account.userName"/>
-            <p ng-show="loginForm.username.$invalid && !loginForm.username.$pristine" class="help-block">Please enter a valid username.</p>
-        </div>
-        <div id="loginPassword" class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine}">
-            <i class="fa fa-lock icon-login-lock" aria-hidden="true"></i>
-            <input class= "form-control" type="password" name="password" placeholder="Password"  ng-minlength="5" ng-maxlength="15" required ng-model="account.password"/>
-            <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Please enter a valid password.</p>
-        </div>
-            <div id="loginSubmit">
-                <input class="btn btn-success" type="submit" id="loginConnexionButton" ng-click="login(loginForm.$valid)" value="CONNEXION"/>
+<div class="vertical-center"  >
+    <div class="container" >
+        <div class="back">
+            <div class="row" >
+                <div class="col-md-4 col-md-offset-4">
+                    <form class="form-signin" name="loginForm" class="loginForm" novalidate="">
+                        <h2 class="form-signin-heading">Please sign in</h2>
+                        <div class="form-group loginInput" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine}">
+                            <input class="form-control input-lg" type="text" name="username"  placeholder="Username"  required ng-model="account.userName" required autofocus>
+                            <p ng-show="loginForm.username.$invalid && !loginForm.username.$pristine" class="help-block">Please enter a valid username.</p>
+                        </div>
+                        <div id="loginPassword" class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine}">
+                            <input class="form-control input-lg" type="password" name="password" placeholder="Password"  ng-minlength="5" ng-maxlength="15" required ng-model="account.password">
+                            <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Please enter a valid password.</p>
+                        </div>
+                        <div id="loginSubmit">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginConnexionButton" ng-click="login(loginForm.$valid)" value="CONNEXION">Sign in</button>
+                        </div>
+                        <div id="signupConnexion" >
+                            <p id="signupConnexionText"><a ui-sref="register">Create an account</a></p>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div id="signupConnexion">
-                <p id="signupConnexionText">Or <a ui-sref="register">Create an account.</a></p>
-            </div>
-    </form>
-
-</div>
-<div data-ng-animate="'custom'" >
-    <div uib-alert ng-repeat="alert in loginAlerts" dismiss-on-timeout="5000" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
-</div>
+        </div>
+    </div>
+    <div data-ng-animate="'custom'" >
+        <div uib-alert ng-repeat="alert in loginAlerts" dismiss-on-timeout="5000" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+    </div>
 </div>
