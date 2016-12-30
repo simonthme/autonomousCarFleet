@@ -31,7 +31,7 @@ const tripMethods = {
           distanceValue: data.distanceValue,
           duration: data.duration,
           durationValue: data.durationValue,
-          departureDate: new Date().getTime(),
+          departureDate: trip.departureDate,
           creationDate: date,
         });
         newTrip.save()

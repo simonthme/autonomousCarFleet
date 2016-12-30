@@ -9,6 +9,7 @@ autoIncrement.initialize(mongoose.connection);
 const carSchema = new mongoose.Schema({
   name: String,
   accountId: String,
+  used: Boolean,
   carNumber: Number,
   creationDate: Date,
 });

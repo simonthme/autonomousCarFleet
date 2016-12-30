@@ -39,3 +39,11 @@ body
   border: solid 2px rgba(0,95,158,1);
   box-shadow: 4px 4px 2px black;
 }
+
+.homeContent {
+  display: flex;
+  .panels {
+    display: flex;
+    flex-direction: column;
+  }
+}

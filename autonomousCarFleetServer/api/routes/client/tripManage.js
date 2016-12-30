@@ -11,13 +11,13 @@ const config = require('../../../config/config');
 const jwt = require('jwt-simple');
 //const carMethods = require('../../helpers/carMethods');
 const tripMethods = require('../../helpers/tripMethods');
+
 const passport = require('passport');
 
 module.exports = function () {
   const router = new express.Router();
 
   router.put('/' , passport.authenticate('jwt', {session: false}), (req, res) => {
-    console.log('in trip router put');
     req.body.accountId = req.header.accountId;
     if (!req.body.accountId || !req.body.carId) {
       res.json({success: false, msg: 'body is missing'});
@@ -25,6 +25,7 @@ module.exports = function () {
           tripMethods.newTrip(req.body)
             .then(trip => {
               if (trip) {
+
                 res.json({success: true, msg: 'Trip successfully added', trip: trip});
               } else {
                 res.json({success: false, msg: 'Trip not found'});
@@ -39,7 +40,7 @@ module.exports = function () {
   });
 
   router.get('/car/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
-    console.log(req.params.id);
+
     tripMethods.findTripsByCarId(req.params.id)
       .then(tripsArray => {
         if (tripsArray) {
@@ -72,7 +73,7 @@ module.exports = function () {
     });
 
     router.get('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
-      console.log(req.params.id);
+
       if (!req.params.id) {
         res.json({success: false, msg: 'missing params'});
       } else {
@@ -93,13 +94,12 @@ module.exports = function () {
     });
 
     router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
-      console.log(req.params.id);
+
       if (!req.params.id) {
         res.json({success: false, msg: 'missing params'});
       } else {
         tripMethods.deleteOneTrip(req.params.id)
           .then(deletedTrip => {
-            console.log(JSON.stringify(deletedTrip));
             res.json({success: true, msg: 'Trip deleted successfully'});
           })
           .catch(err => {
@@ -118,6 +118,7 @@ module.exports = function () {
           .then(trip => {
             if (trip) {
               trip.arrivalDate = req.body.arrivalDate;
+              console.log('TRIP ARRIVAL DATE: ' + trip.arrivalDate);
               return tripMethods.updateOneTrip(trip._id, trip)
             } else {
               res.json({success: false, msg: 'trip not found'});

@@ -17,7 +17,6 @@ module.exports = (function () {
   const getToken = function (headers) {
     if (headers && headers.authorization) {
       const parted = headers.authorization.split(' ');
-      console.log(parted);
       if (parted.length === 2) {
         return parted[1];
       } else {
@@ -29,15 +28,13 @@ module.exports = (function () {
   };
 
   router.use(function(req, res, next) {
-    console.log(req.path);
     if (req.path == '/login' || req.path == '/register') {
       return next();
     }
     const token = getToken(req.headers);
     if (token) {
-      console.log(token);
+
       const decoded = jwt.decode(token, config.constant.jwtSecret);
-      console.log('requete de ' + decoded.userName);
       Account.findOne({
         userName: decoded.userName
       }, function(err, account) {

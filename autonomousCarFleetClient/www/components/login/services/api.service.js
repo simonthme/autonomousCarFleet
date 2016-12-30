@@ -45,7 +45,7 @@ angular.module('starter')
 
   const login = (account) => {
     return $q((resolve, reject) => {
-      console.log(account);
+
       $http.post(ApiUrl.url + '/login', account)
         .then((response) => {
         console.log(response);
@@ -63,7 +63,7 @@ angular.module('starter')
 
   const register = (account) => {
     return $q((resolve, reject) => {
-      console.log(account);
+
       $http.put(ApiUrl.url + '/register', account)
         .then((response) => {
           console.log(response);
@@ -83,7 +83,6 @@ angular.module('starter')
     return $q((resolve, reject) => {
       $http.get(ApiUrl.url + '/car', {handleError:true})
         .then((response) => {
-          console.log(response);
           if (response.data.success) {
             resolve(response.data);
           } else {
@@ -100,7 +99,6 @@ angular.module('starter')
     return $q((resolve, reject) => {
       $http.put(ApiUrl.url + '/car', car)
         .then((response) => {
-          console.log(response);
           if (response.data.success) {
             resolve(response.data);
           } else {
@@ -134,7 +132,6 @@ angular.module('starter')
     return $q((resolve, reject) => {
       $http.get(ApiUrl.url + '/trip/' + id)
         .then((response) => {
-          console.log(response);
           if (response.data.success) {
             resolve(response.data);
           } else {
@@ -151,7 +148,6 @@ angular.module('starter')
     return $q((resolve, reject) => {
       $http.get(ApiUrl.url + '/trip/car/' + carId)
         .then((response) => {
-          console.log(response);
           if (response.data.success) {
             resolve(response.data);
           } else {
@@ -165,8 +161,26 @@ angular.module('starter')
   };
 
   const tripFinished = (date, tripId) => {
+    console.log(date.arrivalDate);
     return $q((resolve, reject) => {
-      $http.patch(ApiUrl.url + '/trip' + tripId, date)
+      $http.patch(ApiUrl.url + '/trip/' + tripId, date)
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error get trip car' + err);
+        })
+    });
+  };
+
+  const updateUsedCar = (car) => {
+    return $q((resolve, reject) => {
+      $http.patch(ApiUrl.url + '/car/' + car.carId, car)
         .then((response) => {
           console.log(response);
           if (response.data.success) {
@@ -193,6 +207,7 @@ angular.module('starter')
     getCar:getCar,
     getCarTrip:getCarTrip,
     tripFinished:tripFinished,
+    updateUsedCar: updateUsedCar,
   }
 
 

@@ -15,9 +15,9 @@ const carMethods = {
       const carData = {
         name: car.name,
         accountId: car.accountId,
+        used: false,
         creationDate: date,
     };
-      console.log(JSON.stringify(carData));
 
       const newCar = new Car(carData);
       newCar.save()

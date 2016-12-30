@@ -29,3 +29,9 @@ html, body {
   margin-right: 20px;
   border: solid 2px #005f9e;
   box-shadow: 4px 4px 2px black; }
+
+.homeContent {
+  display: flex; }
+  .homeContent .panels {
+    display: flex;
+    flex-direction: column; }

@@ -43,7 +43,6 @@ module.exports = function () {
     console.log(accountId);
     carMethods.findAllCars(accountId)
       .then(carsArray => {
-        console.log(carsArray);
         if (carsArray.length > 0) {
           res.json({success: true, msg: 'Successfully found all cars', cars: carsArray});
         } else {
@@ -103,7 +102,7 @@ module.exports = function () {
     } else {
       carMethods.deleteOneCar(req.params.id)
         .then(deletedCar => {
-          console.log(JSON.stringify(deletedCar));
+
           res.json({success: true, msg: 'Car deleted successfully'});
         })
         .catch(err => {
@@ -120,7 +119,7 @@ module.exports = function () {
       carMethods.findOneCar(req.params.id)
         .then(car => {
           if (car) {
-            car.name = req.body.name;
+            car.used = req.body.used;
             return carMethods.updateOneCar(car._id, car)
           } else {
             res.json({success: false, msg: 'car not found'});
