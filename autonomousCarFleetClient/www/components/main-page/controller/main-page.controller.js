@@ -16,11 +16,17 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 
       $scope.selectedCar = '';
       $scope.carTrips = [];
+      $scope.cars = [];
 
       const displayCars = () => {
         return $q((resolve, reject) => {
           ApiService.getCars()
             .then(responseCar => {
+              responseCar.cars.map(car => {
+                if (!car.used) {
+                  $scope.cars.push(car);
+                }
+              });
               resolve(responseCar.cars);
             })
             .catch(err => {
@@ -42,19 +48,33 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
                   car.tripTime = trip.duration;
                   car.tripDepartureAddress = trip.departureAddress;
                   car.tripArrivalAddress = trip.arrivalAddress;
-                  const currentDate = new Date().getTime();
-                  car.timeDone = Math.round((currentDate - trip.departureDate)/60000);
-                  console.log(car.timeDone);
-                  console.log('duration value ' + trip.durationValue <= car.tripTime + '   : ' + trip.durationValue);
-                  if (Math.round((trip.durationValue/60)) <= car.tripTime) {
+                  car.tripDepartureDate = new Date(trip.departureDate).getTime();
+                  car.tripDurationValue = trip.durationValue;
+                  car.tripDistanceValue = trip.distanceValue;
+                  const currentDate = new Date();
+                  currentDate.setMilliseconds(0);
+                  currentDate.setSeconds(0);
+                  //currentDate.getTime();
+                  car.timeDone = Math.round(currentDate.getTime() - car.tripDepartureDate) / 60000;
+                  // console.log('Duration value ' + Math.round(trip.durationValue / 60));
+                  // console.log('car time done ' + car.timeDone);
+                  if (Math.round((trip.durationValue / 60)) <= car.timeDone) {
                     ApiService.tripFinished({
-                      arrivalDate: trip.departureDate + trip.durationValue
+                      arrivalDate: car.tripDepartureDate + trip.durationValue * 1000
                     }, trip._id)
                       .then(response => {
-                        console.log('successfully added arrivalDate' + response);
+                        const carObj = {
+                          carId: trip.carId,
+                          used: false,
+                        };
+                        return ApiService.updateUsedCar(carObj)
+                      })
+                      .then(() => {
+                        console.log('updated arrival date success');
+                        //$state.reload();
                       })
                       .catch(err => {
-                        console.log('error finishing date' + err);
+                        console.log('error in tripFinished');
                       });
                   }
                   $scope.carTrips.push(car);
@@ -70,7 +90,8 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
         .then(carArray => {
           timeTravelled(carArray);
           $interval(() => {
-            timeTravelled(carArray);}, 10000);
+            timeTravelled(carArray);
+          }, 10000);
         });
 
 
@@ -121,19 +142,27 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 
       $scope.addTrip = () => {
         const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
-          $scope.trip.time.getHours(), $scope.trip.time.getMinutes(), $scope.trip.time.getSeconds());
+          $scope.trip.time.getHours(), $scope.trip.time.getMinutes());
         const dataTrip = {
           departureAddress: $scope.trip.departureAddress.formatted_address,
           arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
           departureDate: datetime.getTime(),
           carId: $scope.selectedCar,
         };
-        console.log(dataTrip);
         ApiService.addTrip(dataTrip)
           .then(trip => {
             $state.reload();
             $rootScope.modalInstance.close('close');
             console.log(trip);
+            const carObj = {
+              carId: $scope.selectedCar,
+              used: true,
+            };
+            return ApiService.updateUsedCar(carObj)
+          })
+          .then(carResponse => {
+            console.log('car used update successfull');
+            $state.reload();
           })
           .catch(err => {
             console.log(err);
@@ -169,7 +198,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
       };
 
       $scope.autocompleteOptions = {
-        componentRestrictions: { country: 'fr' },
+        componentRestrictions: {country: 'fr'},
         types: ['geocode']
       };
 
@@ -180,7 +209,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 
 
       $scope.ismeridian = true;
-
 
 
     }]);

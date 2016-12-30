@@ -6,9 +6,22 @@
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">New trip</button>
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">New Car</button>
 </div>
+    <div class="homeContent">
+    <div class="panels">
+    <section class="panel panel-default usedCar">
+        <div class="panel-heading">
+        <h3>Available cars</h3>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="car in cars | orderBy: car.carNumber" class="well">
+                <input type="checkbox">
+                <label>{{car.name}}</label>
+            </div>
+        </div>
+    </section>
     <section class="panel panel-default carDashboard">
         <div class="panel-heading">
-            <h1>ALL CARS IN FLEET</h1>
+            <h3>Trips</h3>
         </div>
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber" class="well">
@@ -21,8 +34,10 @@
             </div>
         </div>
     </section>
+    </div>
     <div id="mapView">
-        <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="12" map>
+        <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="7" map>
         </div>
+    </div>
     </div>
 </div>

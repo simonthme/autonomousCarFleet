@@ -12,8 +12,8 @@ const tripSchema = new mongoose.Schema({
   distanceValue: Number,
   duration: String,
   durationValue: Number,
-  departureDate: Number,
-  arrivalDate: Number,
+  departureDate: Date,
+  arrivalDate: Date,
   creationDate: Date,
 });
 
