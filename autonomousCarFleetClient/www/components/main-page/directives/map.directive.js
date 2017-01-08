@@ -17,12 +17,10 @@ angular.module('starter.mainpage')
           let lng = scope.$eval(attrs.lng);
 
           let zValue = scope.$eval(attrs.zoom);
-          //let markers = [];
-          //let routes = [];
+          let markers = [];
 
 
           let myLatlng = {lat: lat, lng: lng};
-
 
           scope.$eval(attrs.value);
 
@@ -36,33 +34,39 @@ angular.module('starter.mainpage')
             };
             let map = new google.maps.Map(element[0], mapOptions);
 
+            scope.markerVisible = (carTrip, visibleMarker) => {
+              carTrip.tripMarker.setVisible(visibleMarker);
+              if (visibleMarker) {
+                carTrip.tripPolyline.setMap(map);
+              } else {
+                carTrip.tripPolyline.setMap(null);
+              }
+            };
+
 
             getDirections(map);
 
           };
 
           const moveMarker = (map, marker, latlng) => {
-            console.log('setting marker : ' + latlng);
-
+            console.log("setting position marker: " + latlng);
             marker.setPosition(latlng);
-            // map.panTo(latlng);
           };
 
           const autoRefresh = (map, pathCoords, tripDist, tripTime, timeDone, marker) => {
             let i, route;
             let z = 0;
 
-            route = new google.maps.Polyline({
-              path: [],
-              geodesic: true,
-              strokeColor: 'transparent',
-              strokeOpacity: 1.0,
-              strokeWeight: 2,
-              editable: false,
-              map: map
-            });
+            // route = new google.maps.Polyline({
+            //   path: [],
+            //   geodesic: true,
+            //   strokeColor: 'red',
+            //   strokeOpacity: 1.0,
+            //   strokeWeight: 2,
+            //   editable: false,
+            //   map: map
+            // });
 
-            // marker = new google.maps.Marker({map: map});
 
             let pointNumber = 0;
 
@@ -73,16 +77,16 @@ angular.module('starter.mainpage')
               pointNumber = 0;
             }
 
-            console.log('point Number ' + pointNumber);
+            console.log('tripTime ' + Math.round(tripTime / pathCoords.length) );
 
 
             const updatePath = (i, map, marker, pathCoords) => {
-
+              //console.log('update Path call function');
               $timeout(() => {
-                route.getPath().push(pathCoords[i]);
+                //route.getPath().push(pathCoords[i]);
                 console.log('updatePath');
                 moveMarker(map, marker, pathCoords[i]);
-              }, Math.round(tripTime / pathCoords.length) * 1000 * z);
+              },  Math.round(tripTime / pathCoords.length) * 1000 * z); // to change speed (now realtime)
               z++;
             };
 
@@ -95,11 +99,7 @@ angular.module('starter.mainpage')
 
             $timeout(() => {
               scope.carTrips.map(carTrip => {
-
-                // let currentDate = new Date().getTime();
-
                 let directionsService = new google.maps.DirectionsService();
-                let directionsDisplay = new google.maps.DirectionsRenderer();
                 let request = {
                   origin: carTrip.tripDepartureAddress,
                   destination: carTrip.tripArrivalAddress,
@@ -109,48 +109,33 @@ angular.module('starter.mainpage')
                 directionsService.route(request, function (result, status) {
                   if (status == google.maps.DirectionsStatus.OK) {
                     console.log(result);
-                    const marker = new google.maps.Marker({
-                      position: result.routes[0].legs[0].start_location,
-                      map: map,
-                      //icon: gpsMarker,
-                      draggable: false,
-                    });
-                    //markers.push(scope.gpsmarker);
+                    carTrip.tripMarker.setPosition(result.routes[0].legs[0].start_location);
+                    carTrip.tripMarker.setMap(map);
+                    carTrip.tripMarker.setVisible(true);
+                    carTrip.tripPolyline.setMap(map);
+                    markers.push(carTrip.tripMarker);
                     let currentDate = new Date();
                     currentDate.setSeconds(0);
                     currentDate.setMilliseconds(0);
                     currentDate.getTime();
-                    // console.log('dep date in map directive : ' + carTrip.tripDepartureDate);
-                    // console.log('current date : ' + currentDate.getTime());
                     let started = false;
 
-
+                    carTrip.tripPolyline.setPath(result.routes[0].overview_path);
+                    carTrip.tripPolyline.setMap(map);
                     $interval(() => {
-                      // console.log('in interval');
-                      // console.log('started' + started);
                       if (carTrip.tripDepartureDate <= currentDate.getTime() && !started) {
-                        //console.log('start autorefresh');
-                        console.log('autorefresh interval');
                         started = true;
                         autoRefresh(map, result.routes[0].overview_path, carTrip.tripDistanceValue,
-                          carTrip.tripDurationValue, carTrip.timeDone, marker);
+                          carTrip.tripDurationValue, carTrip.timeDone, carTrip.tripMarker);
                       }
-                    }, 3000);
-
-
-                    // directionsDisplay.setDirections(result);
+                    }, 1000);
                   }
                 });
-
-                // directionsDisplay.setMap(map);
               });
             }, 300);
           };
 
           initialize();
-
-
-          // google.maps.event.addDomListener($window, 'load', initialize);
 
         }
       }

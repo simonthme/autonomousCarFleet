@@ -5,8 +5,13 @@
     </div>
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">New trip</button>
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">New Car</button>
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="logout()">Logout</button>
 </div>
     <div class="homeContent">
+        <div id="mapView">
+            <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="7" map>
+            </div>
+        </div>
     <div class="panels">
     <section class="panel panel-default usedCar">
         <div class="panel-heading">
@@ -25,7 +30,7 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber" class="well">
-                <input type="checkbox">
+                <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
                 <label>{{carTrip.name}}</label>
                 <span>
                    <label>Current trip: </label>
@@ -34,10 +39,6 @@
             </div>
         </div>
     </section>
-    </div>
-    <div id="mapView">
-        <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="7" map>
-        </div>
     </div>
     </div>
 </div>

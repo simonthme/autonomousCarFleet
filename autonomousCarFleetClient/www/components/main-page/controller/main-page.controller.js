@@ -4,8 +4,8 @@
 'use strict';
 angular.module('starter.mainpage', []);
 angular.module('starter.mainpage').controller('MainPageCtrl',
-  ['$scope', '$rootScope', '$state', '$q', 'ApiService', '$uibModal', '$interval',
-    function ($scope, $rootScope, $state, $q, ApiService, $uibModal, $interval) {
+  ['$scope', '$rootScope', '$state', '$q', 'ApiService', '$uibModal', '$interval', 'LocalStorageService',
+    function ($scope, $rootScope, $state, $q, ApiService, $uibModal, $interval, LocalStorageService) {
 
       $scope.trip = {
         date: '',
@@ -17,6 +17,25 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
       $scope.selectedCar = '';
       $scope.carTrips = [];
       $scope.cars = [];
+
+      $scope.trip.time = new Date();
+
+      $scope.hstep = 1;
+      $scope.mstep = 1;
+
+      $scope.visibleMarker = true;
+      $scope.ismeridian = true;
+
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+      $scope.format = $scope.formats[0];
+
+      let carMarker = {
+        url: 'assets/image/carImg.svg',
+        scaledSize: new google.maps.Size(20, 20),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(10, 10)
+      };
+
 
       const displayCars = () => {
         return $q((resolve, reject) => {
@@ -51,6 +70,21 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
                   car.tripDepartureDate = new Date(trip.departureDate).getTime();
                   car.tripDurationValue = trip.durationValue;
                   car.tripDistanceValue = trip.distanceValue;
+                  car.tripMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(48.858093, 2.294694),
+                    icon: carMarker,
+                    draggable: false,
+                    visible: false,
+                  });
+                  car.tripPolyline = new google.maps.Polyline({
+                    path: [],
+                    geodesic: true,
+                    strokeColor: 'red',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                    editable: false,
+                   // map: map
+                  });
                   const currentDate = new Date();
                   currentDate.setMilliseconds(0);
                   currentDate.setSeconds(0);
@@ -91,7 +125,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
           timeTravelled(carArray);
           $interval(() => {
             timeTravelled(carArray);
-          }, 10000);
+          }, 60000);
         });
 
 
@@ -190,9 +224,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
       };
       $scope.today();
 
-      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-      $scope.format = $scope.formats[0];
-
       $scope.popup1 = {
         opened: false
       };
@@ -202,13 +233,32 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
         types: ['geocode']
       };
 
-      $scope.trip.time = new Date();
-
-      $scope.hstep = 1;
-      $scope.mstep = 1;
 
 
-      $scope.ismeridian = true;
+
+      $scope.logout = () => {
+        $rootScope.modalInstance = $uibModal.open({
+          templateUrl: 'components/main-page/views/logout-modal.view.html',
+          scope: $scope,
+          controller: 'MainPageCtrl',
+          resolve: {
+            scopeParent: function () {
+              return $scope;
+            },
+            modalId: function () {
+              return $scope.modalId;
+            }
+          }
+        });
+      };
+
+      $scope.logoutModal = () => {
+        LocalStorageService.removeLocalStorage();
+        ApiService.logout();
+        $state.go('login');
+      }
+
+
 
 
     }]);

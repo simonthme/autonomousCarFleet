@@ -1,0 +1,22 @@
+.form-signin-heading{
+  color : grey;
+}
+
+.back{
+  background-color: white;
+  opacity: 0.85;
+}
+.form-control{
+  margin-bottom: 0.5em;
+}
+
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-image:url('../image/background.jpeg');
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:center center;
+}

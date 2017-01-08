@@ -29,7 +29,7 @@ angular.module('starter.register')
           })
           .then(loginResponse => {
             console.log(loginResponse);
-            LocalStorageService.saveToken(loginResponse.token);
+            ApiService.saveToken(loginResponse.token);
             LocalStorageService.saveUser(loginResponse.accountData);
             $state.go('mainpage');
           })
@@ -38,9 +38,6 @@ angular.module('starter.register')
           })
       }
     }
-
-
-
 
 
   }]);

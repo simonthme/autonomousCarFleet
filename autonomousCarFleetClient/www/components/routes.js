@@ -11,19 +11,19 @@ angular.module('starter', ['ui.router', 'ui.bootstrap', 'starter.login', 'starte
           url: '/login',
           controller: 'LoginCtrl',
           templateUrl: 'components/login/views/login.view.html',
-          data: {
-            authorization: true,
-
-          }
+          // data: {
+          //   authorization: true,
+          //
+          // }
         })
         .state('register', {
           url: '/register',
           controller: 'RegisterCtrl',
           templateUrl: 'components/register/views/register.view.html',
-          data: {
-            authorization: true,
-
-          }
+          // data: {
+          //   authorization: true,
+          //
+          // }
         })
         .state('mainpage', {
           url: '/mainpage',
@@ -31,6 +31,7 @@ angular.module('starter', ['ui.router', 'ui.bootstrap', 'starter.login', 'starte
           templateUrl: 'components/main-page/views/main-page.view.html',
           data: {
             authorization: false,
+            redirectTo: 'login'
           }
         });
 

@@ -61,6 +61,11 @@ angular.module('starter')
     });
   };
 
+  const logout = () => {
+    authenticated = false;
+    currentToken= '';
+  };
+
   const register = (account) => {
     return $q((resolve, reject) => {
 
@@ -208,6 +213,7 @@ angular.module('starter')
     getCarTrip:getCarTrip,
     tripFinished:tripFinished,
     updateUsedCar: updateUsedCar,
+    logout:logout,
   }
 
 

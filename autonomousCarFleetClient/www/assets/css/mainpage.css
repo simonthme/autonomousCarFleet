@@ -17,12 +17,12 @@
   margin-bottom: 20px;
   position: absolute; }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
+html {
+  height: 600px; }
+
+body {
+  height: 100%; }
+
 #map {
   height: 75%;
   margin-left: 20px;
@@ -31,7 +31,12 @@ html, body {
   box-shadow: 4px 4px 2px black; }
 
 .homeContent {
-  display: flex; }
+  display: flex;
+  flex-direction: column; }
   .homeContent .panels {
     display: flex;
-    flex-direction: column; }
+    flex-direction: row; }
+    .homeContent .panels .usedCar {
+      width: 50%; }
+    .homeContent .panels .carDashboard {
+      width: 50%; }

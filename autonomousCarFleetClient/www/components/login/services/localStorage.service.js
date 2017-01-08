@@ -35,6 +35,7 @@ angular.module('starter').service('LocalStorageService', ['$q', '$window', '$htt
   const removeLocalStorage = () => {
     if (typeof(Storage) !== 'undefined') {
       $window.localStorage.removeItem('user');
+      $window.localStorage.removeItem('token');
     } else {
       console.log('browser does not support local storage, data not removed');
     }

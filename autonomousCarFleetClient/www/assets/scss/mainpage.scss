@@ -42,8 +42,16 @@ body
 
 .homeContent {
   display: flex;
+  flex-direction: column;
   .panels {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    .usedCar {
+      width: 50%;
+    }
+    .carDashboard {
+      width: 50%;
+    }
+
   }
 }
