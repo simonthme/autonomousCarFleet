@@ -14,5 +14,28 @@
   "devDependencies": {
     "bower": "^1.8.0",
     "gulp": "^3.9.1"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "browser",
+      "node"
+    ],
+    "space": 2,
+    "rules": {
+      "max-len": [
+        "error",
+        80,
+        2
+      ],
+      "import/no-unresolved": [
+        2,
+        {
+          "ignore": [
+            "ember"
+          ]
+        }
+      ]
+    }
   }
 }
