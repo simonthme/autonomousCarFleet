@@ -43,6 +43,6 @@
     }
   },
   "ignores": [
-    "Gruntflie.js"
+    "Gruntfile.js"
   ]
 }
