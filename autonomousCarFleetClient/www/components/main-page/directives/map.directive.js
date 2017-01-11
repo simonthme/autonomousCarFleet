@@ -56,7 +56,7 @@ angular.module('starter.mainpage')
 				console.log('updatePath');
 				marker.setPosition(pathCoords[i]);
 				// moveMarker(map, marker, pathCoords[i]);
-			  }, 1000 * z); // to change speed (now realtime)
+			  }, Math.round(tripTime / pathCoords.length) * 1000 * z); // to change speed (now realtime)
 			  // Math.round(tripTime / pathCoords.length) *
 			  z++;
 			};

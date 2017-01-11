@@ -10,6 +10,7 @@ const carSchema = new mongoose.Schema({
   name: String,
   accountId: String,
   used: Boolean,
+  groupName: String,
   carNumber: Number,
   creationDate: Date,
 });

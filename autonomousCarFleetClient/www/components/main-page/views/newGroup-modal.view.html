@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h1>Create new group</h1>
+</div>
+<div class="modal-body">
+
+    <div class="form-group loginInput">
+        <!--<i class="fa fa-car" aria-hidden="true"></i>-->
+        <input class= "loginInputField form-control" type="text" name="groupName"  placeholder="Group name" minlength="2"  required ng-model="groupName"/>
+        <div
+                isteven-multi-select
+                input-model="cars"
+                output-model="selectedGroupCars"
+                button-label="icon name"
+                item-label="icon name"
+                tick-property="ticked"
+        >
+        </div>
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="addGroup(groupName)">ADD CAR</button>
+</div>

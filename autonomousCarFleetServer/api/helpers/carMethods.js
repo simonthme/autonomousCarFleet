@@ -42,6 +42,10 @@ const carMethods = {
 
   updateOneCar(id, car) {
     return Car.update({_id: id}, car).exec();
+  },
+
+  findGroupCars(id, groupName) {
+    return Car.find({accountId: id, groupName: groupName}).exec();
   }
 
 };

@@ -6,7 +6,19 @@
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">New trip</button>
     <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">New Car</button>
     <button type="button" class="btn btn-primary navbar-btn" ng-click="logout()">Logout</button>
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="group()">New Car Group</button>
+
 </div>
+    <section class="panel panel-default usedCar">
+        <div class="panel-heading">
+            <h3>Groups</h3>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="group in groups" >
+                <input type="checkbox" ng-change="showGroup(group, showCar)" ng-model="showCar"/> {{group}}
+            </div>
+        </div>
+    </section>
     <div class="homeContent">
         <div id="mapView">
             <div class="map" lat="48.85339980965301" lng="2.347877580291879" value="carTrips" zoom="7" map>
@@ -34,7 +46,8 @@
                 <label>{{carTrip.name}}</label>
                 <span>
                    <label>Current trip:</label>
-                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} -- already done {{carTimeDone[$index]}} %</span>
+                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>
+
                 </span>
             </div>
         </div>

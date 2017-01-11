@@ -9,6 +9,7 @@ const authRoutes = require('./client/authentication')(router);
 const Account = require('../model/account');
 const carManageRoutes = require('./client/carManage')(router);
 const tripManageRoutes = require('./client/tripManage')(router);
+const groupManageRoutes = require('./client/groupManage')(router);
 const jwt = require('jwt-simple');
 
 module.exports = (function () {
@@ -54,6 +55,7 @@ module.exports = (function () {
   router.use('/', authRoutes);
   router.use('/car', carManageRoutes);
   router.use('/trip', tripManageRoutes);
+  router.use('/group', groupManageRoutes);
 
   return router;
 })();
