@@ -19,8 +19,8 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="car in cars | orderBy: car.carNumber" class="well">
-                <input type="checkbox">
                 <label>{{car.name}}</label>
+                <button ng-click="deleteCar(car._id)">Supprimer la voiture</button>
             </div>
         </div>
     </section>
@@ -29,12 +29,12 @@
             <h3>Trips</h3>
         </div>
         <div class="panel-body">
-            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber" class="well">
+            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
                 <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
                 <label>{{carTrip.name}}</label>
                 <span>
-                   <label>Current trip: </label>
-                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} -- already done {{carTrip.timeDone}} minutes</span>
+                   <label>Current trip:</label>
+                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} -- already done {{carTimeDone[$index]}} %</span>
                 </span>
             </div>
         </div>

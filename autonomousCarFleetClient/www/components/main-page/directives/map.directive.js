@@ -48,27 +48,18 @@ angular.module('starter.mainpage')
 
           };
 
-          const moveMarker = (map, marker, latlng) => {
-            console.log("setting position marker: " + latlng);
-            marker.setPosition(latlng);
-          };
+          // const moveMarker = (map, marker, latlng) => {
+          //   console.log("setting position marker: " + latlng);
+          //   marker.setPosition(latlng);
+          //   // console.log(marker.setPosition(latlng));
+          // };
 
           const autoRefresh = (map, pathCoords, tripDist, tripTime, timeDone, marker) => {
-            let i, route;
+            let i;
             let z = 0;
-
-            // route = new google.maps.Polyline({
-            //   path: [],
-            //   geodesic: true,
-            //   strokeColor: 'red',
-            //   strokeOpacity: 1.0,
-            //   strokeWeight: 2,
-            //   editable: false,
-            //   map: map
-            // });
-
-
             let pointNumber = 0;
+
+
 
             if (timeDone > 0) {
               const onePointTime = Math.round((tripTime / pathCoords.length));
@@ -77,16 +68,18 @@ angular.module('starter.mainpage')
               pointNumber = 0;
             }
 
-            console.log('tripTime ' + Math.round(tripTime / pathCoords.length) );
+            console.log('tripTime ' + Math.round(tripTime / pathCoords.length));
 
 
             const updatePath = (i, map, marker, pathCoords) => {
-              //console.log('update Path call function');
               $timeout(() => {
-                //route.getPath().push(pathCoords[i]);
                 console.log('updatePath');
-                moveMarker(map, marker, pathCoords[i]);
-              },  Math.round(tripTime / pathCoords.length) * 1000 * z); // to change speed (now realtime)
+                marker.setPosition(pathCoords[i]);
+
+
+                // moveMarker(map, marker, pathCoords[i]);
+              }, 1000 * z); // to change speed (now realtime)
+              // Math.round(tripTime / pathCoords.length) *
               z++;
             };
 
@@ -114,21 +107,30 @@ angular.module('starter.mainpage')
                     carTrip.tripMarker.setVisible(true);
                     carTrip.tripPolyline.setMap(map);
                     markers.push(carTrip.tripMarker);
+
                     let currentDate = new Date();
                     currentDate.setSeconds(0);
                     currentDate.setMilliseconds(0);
                     currentDate.getTime();
-                    let started = false;
 
                     carTrip.tripPolyline.setPath(result.routes[0].overview_path);
                     carTrip.tripPolyline.setMap(map);
+                    let started = false;
                     $interval(() => {
-                      if (carTrip.tripDepartureDate <= currentDate.getTime() && !started) {
+                      const timeDate = new Date();
+                      timeDate.setSeconds(0);
+                      timeDate.setMilliseconds(0);
+                      console.log('time Date : ' + timeDate);
+                      const depDate = new Date(carTrip.tripDepartureDate).getTime();
+                      const timeDone = Math.round(timeDate.getTime() - depDate) / 60000;
+                      console.log('car time done ' + timeDone);
+                      if (timeDone >= 0 && !started) {
+                        console.log('car started');
                         started = true;
                         autoRefresh(map, result.routes[0].overview_path, carTrip.tripDistanceValue,
-                          carTrip.tripDurationValue, carTrip.timeDone, carTrip.tripMarker);
+                          carTrip.tripDurationValue, timeDone, carTrip.tripMarker);
                       }
-                    }, 1000);
+                    }, 2000);
                   }
                 });
               });

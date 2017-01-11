@@ -200,6 +200,23 @@ angular.module('starter')
     });
   };
 
+  const deleteCar = (carId) => {
+    return $q((resolve, reject) => {
+      $http.delete(ApiUrl.url + '/car/' + carId)
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error delete car' + err);
+        })
+    });
+  };
+
   return {
     login:login,
     register:register,
@@ -214,6 +231,7 @@ angular.module('starter')
     tripFinished:tripFinished,
     updateUsedCar: updateUsedCar,
     logout:logout,
+    deleteCar:deleteCar,
   }
 
 

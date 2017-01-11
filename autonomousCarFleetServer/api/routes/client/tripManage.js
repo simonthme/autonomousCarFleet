@@ -19,6 +19,7 @@ module.exports = function () {
 
   router.put('/' , passport.authenticate('jwt', {session: false}), (req, res) => {
     req.body.accountId = req.header.accountId;
+    console.log(req.body);
     if (!req.body.accountId || !req.body.carId) {
       res.json({success: false, msg: 'body is missing'});
     } else {

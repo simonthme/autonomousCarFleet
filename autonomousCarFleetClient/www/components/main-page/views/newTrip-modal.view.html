@@ -24,9 +24,18 @@
     <div>
         <form name="selectCarForm">
             <label>Car Selection:</label>
-            <select name="selectCar" id="repeatSelect" ng-model="selectedCar">
-                <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
-            </select>
+            <div
+                    isteven-multi-select
+                    input-model="cars"
+                    output-model="selectedCars"
+                    button-label="icon name"
+                    item-label="icon name"
+                    tick-property="ticked"
+            >
+            </div>
+            <!--<select name="selectCar" id="repeatSelect" ng-model="selectedCar">-->
+                <!--<option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>-->
+            <!--</select>-->
         </form>
     </div>
 

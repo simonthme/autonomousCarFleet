@@ -2,7 +2,8 @@
  * Created by simonthome on 23/12/2016.
  */
 'use strict';
-angular.module('starter', ['ui.router', 'ui.bootstrap', 'starter.login', 'starter.register', 'google.places'])
+angular.module('starter',
+  ['ui.router', 'ui.bootstrap', 'starter.login', 'starter.register', 'google.places', 'isteven-multi-select'])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
     ($stateProvider, $urlRouterProvider) => {
 
@@ -11,19 +12,11 @@ angular.module('starter', ['ui.router', 'ui.bootstrap', 'starter.login', 'starte
           url: '/login',
           controller: 'LoginCtrl',
           templateUrl: 'components/login/views/login.view.html',
-          // data: {
-          //   authorization: true,
-          //
-          // }
         })
         .state('register', {
           url: '/register',
           controller: 'RegisterCtrl',
           templateUrl: 'components/register/views/register.view.html',
-          // data: {
-          //   authorization: true,
-          //
-          // }
         })
         .state('mainpage', {
           url: '/mainpage',
