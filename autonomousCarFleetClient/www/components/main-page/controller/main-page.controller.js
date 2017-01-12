@@ -12,7 +12,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				departureAddress: '',
 				arrivalAddress: ''
 			};
-			$scope.selectedCars = '';
+			$scope.selectedCar = '';
       $scope.selectedGroupCars = [];
 			$scope.carTrips = [];
 			$scope.cars = [];
@@ -192,7 +192,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 			};
 			$scope.addTrip = () => {
 				//  console.log('cars array ' + JSON.stringify($scope.selectedCars));
-				$scope.selectedCars.map(car => {
+				//$scope.selectedCars.map(car => {
 					const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
 						$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
 					const dataTrip = {
@@ -214,12 +214,12 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 						})
 						.then(carResponse => {
 							console.log('car used update successfull');
-							//  $state.reload('mainpage');
+							  $state.reload('mainpage');
 							})
 						.catch(err => {
 							console.log(err);
-						})
-				})
+						});
+				//})
 			};
       $scope.group = () => {
         $rootScope.modalInstance = $uibModal.open({

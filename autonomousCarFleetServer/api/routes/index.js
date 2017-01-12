@@ -9,7 +9,7 @@ const authRoutes = require('./client/authentication')(router);
 const Account = require('../model/account');
 const carManageRoutes = require('./client/car-manage')(router);
 const tripManageRoutes = require('./client/trip-manage')(router);
-const groupManageRoutes = require('./client/groupManage')(router);
+const groupManageRoutes = require('./client/group-manage')(router);
 const jwt = require('jwt-simple');
 
 module.exports = (function () {
