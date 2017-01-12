@@ -7,8 +7,8 @@ const router = require('express').Router();
 const config = require('../../config/config');
 const authRoutes = require('./client/authentication')(router);
 const Account = require('../model/account');
-const carManageRoutes = require('./client/carManage')(router);
-const tripManageRoutes = require('./client/tripManage')(router);
+const carManageRoutes = require('./client/car-manage')(router);
+const tripManageRoutes = require('./client/trip-manage')(router);
 const groupManageRoutes = require('./client/groupManage')(router);
 const jwt = require('jwt-simple');
 
