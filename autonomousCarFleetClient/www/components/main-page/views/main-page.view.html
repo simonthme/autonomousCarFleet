@@ -1,14 +1,26 @@
 <div>
 <div class="navbar navbar-default homeBar">
-    <div class="navbar-header">
-        <div class="navbar-brand appTitle">AUTONOMOUS CAR FLEET</div>
-    </div>
-    <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">New trip</button>
-    <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">New Car</button>
-    <button type="button" class="btn btn-primary navbar-btn" ng-click="logout()">Logout</button>
-    <button type="button" class="btn btn-primary navbar-btn" ng-click="group()">New Car Group</button>
+    <div class="col-md-4">
+        <div class="navbar-header">
+            <div class="navbar-brand appTitle">AUTONOMOUS CAR FLEET</div>
+        </div>
+        </div>
+    <div class="col-md-4" align="center">
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="newTrip()">
+        <i class="fa fa-road" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="btn btn-primary navbar-btn" ng-click="newCar()">
+        <i class="fa fa-car" aria-hidden="true"></i>
+    </button>
+    <button type="button" id="icon-groupcar" class="btn btn-primary navbar-btn" ng-click="group()">
+        <i class="fa fa-list-ul" aria-hidden="true"></i>
+    </button>
 
-</div>
+        </div>
+    <div class="col-md-4"  align="right">
+    <button type="button" class="btn btn-danger navbar-btn" ng-click="logout()">Logout</button>
+    </div>
+    </div>
     <section class="panel panel-default usedCar">
         <div class="panel-heading">
             <h3>Groups</h3>
@@ -31,8 +43,19 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="car in cars | orderBy: car.carNumber" class="well">
-                <label>{{car.name}}</label>
-                <button ng-click="deleteCar(car._id)">Supprimer la voiture</button>
+                <div class="row">
+                    <div class="col-md-1">
+                        <input type="checkbox">
+                    </div>
+                    <div class="col-md-9">
+                    <label>{{car.name}}</label>
+                    </div>
+                <div class="col-md-2" align="center">
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="deleteCar(car._id)">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+                    </div>
             </div>
         </div>
     </section>
@@ -43,7 +66,7 @@
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
                 <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
-                <label>{{carTrip.name}}</label>
+                <label >{{carTrip.name}}</label >
                 <span>
                    <label>Current trip:</label>
                     <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>
