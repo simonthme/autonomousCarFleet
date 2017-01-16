@@ -27,7 +27,14 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="group in groups" >
-                <input type="checkbox" ng-change="showGroup(group, showCar)" ng-model="showCar"/> {{group}}
+                <div class="row">
+                <div class="col-md-1">
+                    <input type="checkbox" ng-change="showGroup(group, showCar)" ng-model="showCar"/>
+                </div>
+                <div class="col-md-11">
+                    <label>{{group}}</label>
+                </div>
+                </div>
             </div>
         </div>
     </section>
@@ -48,14 +55,14 @@
                         <input type="checkbox">
                     </div>
                     <div class="col-md-9">
-                    <label>{{car.name}}</label>
+                        <label>{{car.name}}</label>
                     </div>
-                <div class="col-md-2" align="center">
-                    <button type="button" class="btn btn-danger btn-xs" ng-click="deleteCar(car._id)">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                    </button>
+                    <div class="col-md-2" align="center">
+                        <button type="button" class="btn btn-danger btn-xs" ng-click="deleteCar(car._id)">
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
-                    </div>
             </div>
         </div>
     </section>
@@ -70,7 +77,6 @@
                 <span>
                    <label>Current trip:</label>
                     <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>
-
                 </span>
             </div>
         </div>
