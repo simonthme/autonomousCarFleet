@@ -12,11 +12,13 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				departureAddress: '',
 				arrivalAddress: ''
 			};
+			//$scope.showCar = false;
 			$scope.selectedCar = '';
       $scope.selectedGroupCars = [];
 			$scope.carTrips = [];
 			$scope.cars = [];
-      $scope.groups = [];
+      $scope.stringGroups = [];
+      $scope.groups = [{name: 'All cars', show: true}];
 			$scope.trip.time = new Date();
 			$scope.hstep = 1;
 			$scope.mstep = 1;
@@ -35,16 +37,19 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					ApiService.getCars()
 						.then(responseCar => {
 							responseCar.cars.map(car => {
-                if (car.groupName && $scope.groups.indexOf(car.groupName) === -1) {
-                  console.log('in car group name ' + car.groupName);
-                  $scope.groups.push(car.groupName);
-                  console.log($scope.groups);
-                }
+								if (car.groupName && $scope.stringGroups.indexOf(car.groupName) === -1) {
+									 $scope.stringGroups.push(car.groupName);
+									}
+
 								if (!car.used) {
 									car.maker = car.name;
 									car.ticked = false;
 									$scope.cars.push(car);
 								}
+							});
+							console.log($scope.stringGroups);
+							angular.forEach($scope.stringGroups, name => {
+                  $scope.groups.push({name: name, show: false});
 							});
 							resolve(responseCar.cars);
 						})
@@ -250,32 +255,55 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
             .catch(err => console.log(err));
         })
       };
-      $scope.showGroup = (group, showCar) => {
+      $scope.showGroup = (group) => {
         //group.show = showCar;
-        $scope.cars = [];
-        if (showCar) {
-          console.log(group);
-          ApiService.getGroupCars({groupName: group})
-            .then(responseCar => {
-              responseCar.cars.map(car => {
-                if (!car.used) {
-                  car.maker = car.name;
-                  car.ticked = false;
-                  $scope.cars.push(car);
-                }
-              });
-              //timeTravelled(responseCar.cars);
-            })
-            .catch(err => {
-              reject(err);
-              console.log(err);
-            });
-        } else {
-          displayCars()
-            .then(carArray => {
-              //timeTravelled(carArray);
-            });
-        }
+				//$scope.showCar = true;
+				$scope.cars = [];
+        $scope.groups.forEach((groupy) => {
+        	// console.log(JSON.stringify(groupy));
+        	// console.log(group);
+					groupy.show = group === groupy;
+          if (groupy.show) {
+          	//groupy.show = true;
+          	if (group.name !== 'All cars') {
+              console.log(group);
+              ApiService.getGroupCars({groupName: group.name})
+                .then(responseCar => {
+                  responseCar.cars.map(car => {
+                    if (!car.used) {
+                      car.maker = car.name;
+                      car.ticked = false;
+                      $scope.cars.push(car);
+                    }
+                  });
+                  //timeTravelled(responseCar.cars);
+                })
+                .catch(err => {
+                  reject(err);
+                  console.log(err);
+                });
+            } else {
+              ApiService.getCars()
+                .then(responseCars => {
+                  responseCars.cars.map(car => {
+                    if (!car.used) {
+                      car.maker = car.name;
+                      car.ticked = false;
+                      $scope.cars.push(car);
+                    }
+                  })
+                })
+						}
+          }
+
+        });
+
+        // console.log(group.show);
+        // $scope.cars = [];
+        // if (group.show && group.name !== 'All cars') {
+        // 	//$scope.showCar = false;
+        //
+        // }
       };
 			$scope.dateOptions = {
 				//  dateDisabled: disabled,
@@ -330,5 +358,9 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					.catch(err => {
 						console.log(err);
 					})
+			};
+
+			$scope.cancel = () => {
+				$rootScope.modalInstance.close('close');
 			}
 }]);

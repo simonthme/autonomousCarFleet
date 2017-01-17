@@ -29,10 +29,10 @@
             <div ng-repeat="group in groups" >
                 <div class="row">
                 <div class="col-md-1">
-                    <input type="checkbox" ng-change="showGroup(group, showCar)" ng-model="showCar"/>
+                    <input type="radio" ng-click="showGroup(group)" ng-checked="group.show"/>
                 </div>
                 <div class="col-md-11">
-                    <label>{{group}}</label>
+                    <label>{{group.name}}</label>
                 </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
                 <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
-                <label >{{carTrip.name}}</label >
+                <label>{{carTrip.name}}</label>
                 <span>
                    <label>Current trip:</label>
                     <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>

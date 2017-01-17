@@ -23,18 +23,14 @@
     <div uib-timepicker ng-model="trip.time" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
     <div>
         <form name="selectCarForm">
-            <label>Car Selection:</label>
-            <!--<div-->
-                    <!--isteven-multi-select-->
-                    <!--input-model="cars"-->
-                    <!--output-model="selectedCars"-->
-                    <!--button-label="icon name"-->
-                    <!--item-label="icon name"-->
-                    <!--tick-property="ticked"-->
-            <!--&gt;-->
-            <!--</div>-->
-            <select name="selectCar" id="repeatSelect" ng-model="selectedCar">
+            <label>Car selection:</label>
+            <select name="selectCar"  ng-model="selectedCar">
                 <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
+            </select>
+            <span>Or </span>
+            <label>Group selection:</label>
+            <select name="selectCar"  ng-model="selectedGroup">
+                <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
             </select>
         </form>
     </div>
