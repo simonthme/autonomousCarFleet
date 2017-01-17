@@ -118,6 +118,22 @@ angular.module('starter')
 				});
 		});
 	};
+	const addGroupTrip = trip => {
+    return $q((resolve, reject) => {
+      $http.put(ApiUrl.url + '/trip/group', trip)
+        .then(response => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error put trip' + err);
+        });
+    });
+	};
 	const getCar = id => {
 		return $q((resolve, reject) => {
 			$http.get(ApiUrl.url + '/trip/' + id)
@@ -181,6 +197,22 @@ angular.module('starter')
 				});
 		});
 	};
+	const updateGroupUsedCar = groupName => {
+    return $q((resolve, reject) => {
+      $http.patch(ApiUrl.url + '/group', groupName)
+        .then(response => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error get trip car' + err);
+        });
+    });
+	};
 	const deleteCar = carId => {
 		return $q((resolve, reject) => {
 			$http.delete(ApiUrl.url + '/car/' + carId)
@@ -239,13 +271,16 @@ angular.module('starter')
 	isLoggedIn: isLoggedIn,
 	addCar: addCar,
 	addTrip: addTrip,
+		addGroupTrip: addGroupTrip,
 	getCar: getCar,
 	getCarTrip: getCarTrip,
 	tripFinished: tripFinished,
 	updateUsedCar: updateUsedCar,
+    updateGroupUsedCar:updateGroupUsedCar,
 	logout: logout,
 	deleteCar: deleteCar,
     createGroup:createGroup,
     getGroupCars: getGroupCars,
+
   };
 }]);

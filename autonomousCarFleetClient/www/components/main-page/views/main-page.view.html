@@ -71,12 +71,13 @@
             <h3>Trips</h3>
         </div>
         <div class="panel-body">
-            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
+
+            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber" class="well" >
                 <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
                 <label>{{carTrip.name}}</label>
                 <span>
                    <label>Current trip:</label>
-                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>
+                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTrip.timeDone"><span style="color:white; white-space:nowrap;">  {{carTrip.timeDone}} %</span></uib-progressbar></span>
                 </span>
             </div>
         </div>

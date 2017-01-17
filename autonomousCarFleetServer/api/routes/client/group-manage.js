@@ -39,6 +39,27 @@ module.exports = function () {
     }
   });
 
+  router.patch('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+    const accountId = req.header.accountId;
+    carMethods.findGroupCars(accountId, req.body.groupName)
+      .then(cars => {
+        if (cars.length > 0) {
+          cars.forEach(car => {
+            car.used = true;
+            return carMethods.updateOneCar(car._id, car)
+          })
+        } else {
+          res.json({success: false, msg: 'No cars found in group'});
+        }
+      })
+      .then(updateResponse => {
+        res.json({success: true, msg: 'successfully updated cars in group'});
+      })
+      .catch(err => {
+        res.json({success: false, msg: 'error updating cars in group'});
+      })
+  });
+
   router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     const accountId = req.header.accountId;
     console.log(req.body.groupName);

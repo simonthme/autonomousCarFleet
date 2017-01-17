@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.1.4",
     "bcrypt-as-promised": "^1.1.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",

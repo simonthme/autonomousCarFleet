@@ -34,6 +34,26 @@ module.exports = function () {
 			})
 	}
   });
+  router.put('/group' , passport.authenticate('jwt', {session: false}), (req, res) => {
+    req.body.accountId = req.header.accountId;
+    console.log('group body' + JSON.stringify(req.body));
+    if (!req.body.accountId || !req.body.groupName) {
+      res.json({success: false, msg: 'body is missing'});
+    } else {
+      tripMethods.newGroupTrip(req.body)
+        .then(trip => {
+          if (trip) {
+            res.json({success: true, msg: 'Trip successfully added', trip: trip});
+          } else {
+            res.json({success: false, msg: 'Trip not found'});
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.json({success: false, msg: 'Error saving trip'});
+        })
+    }
+  });
   router.get('/car/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
 	tripMethods.findTripsByCarId(req.params.id)
 	  .then(tripsArray => {

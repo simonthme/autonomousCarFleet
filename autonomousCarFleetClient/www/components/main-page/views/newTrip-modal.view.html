@@ -23,14 +23,14 @@
     <div uib-timepicker ng-model="trip.time" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
     <div>
         <form name="selectCarForm">
-            <label>Car selection:</label>
-            <select name="selectCar"  ng-model="selectedCar">
+            <input type="radio" ng-click="changeCarValue()" ng-checked="carSelectionValue" ><label>Car selection:</label>
+            <select name="selectCar"  ng-model="selectedCar" ng-disabled="!carSelectionValue">
                 <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
             </select>
             <span>Or </span>
             <label>Group selection:</label>
-            <select name="selectCar"  ng-model="selectedGroup">
-                <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
+            <input type="radio" ng-click="changeGroupValue()" ng-checked="groupSelectionValue"><select name="selectCar"  ng-model="selectedGroup" ng-disabled="!groupSelectionValue">
+                <option ng-repeat="groupName in availableGroups" value="{{groupName}}">{{groupName}}</option>
             </select>
         </form>
     </div>
