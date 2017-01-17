@@ -72,12 +72,33 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
-                <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
-                <label>{{carTrip.name}}</label>
-                <span>
+                <div>
+                    <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
+                    <label>{{carTrip.name}}</label>
+                </div>
+                <div>
                    <label>Current trip:</label>
-                    <span>{{carTrip.tripDepartureAddress}} => {{carTrip.tripArrivalAddress}} -- {{carTrip.tripDistance}} -- {{carTrip.tripTime}} <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">  {{carTimeDone[$index]}} %</span></uib-progressbar></span>
-                </span>
+                    <span> <uib-progressbar max="100" value="carTimeDone[$index]"><span style="color:white; white-space:nowrap;">
+                        {{carTimeDone[$index]}} %</span></uib-progressbar></span>
+                    <table>
+                        <tr>
+                            <th width="100px"> From : </th>
+                            <td> {{carTrip.tripDepartureAddress}} </td>
+                        </tr>
+                        <tr>
+                            <th>To :</th>
+                            <td> {{carTrip.tripArrivalAddress}} </td>
+                        </tr>
+                        <tr>
+                            <th> Distance : </th>
+                            <td>{{carTrip.tripDistance}}</td>
+                        </tr>
+                        <tr>
+                            <th> Time : </th>
+                            <td>{{carTrip.tripTime}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </section>

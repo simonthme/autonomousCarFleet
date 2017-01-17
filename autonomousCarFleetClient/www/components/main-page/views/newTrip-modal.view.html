@@ -15,23 +15,32 @@
                is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"
                alt-input-formats="altInputFormats"/>
         <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open1()"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
-            </span>
+            <button type="button" class="btn btn-default" ng-click="open1()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
     </div>
     <label>Time:</label>
     <div uib-timepicker ng-model="trip.time" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
     <div>
         <form name="selectCarForm">
-            <label>Car selection:</label>
-            <select name="selectCar"  ng-model="selectedCar">
-                <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
-            </select>
-            <span>Or </span>
-            <label>Group selection:</label>
-            <select name="selectCar"  ng-model="selectedGroup">
-                <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
-            </select>
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Car selection : </label>
+                    <select name="selectCar"  ng-model="selectedCar">
+                        <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <span> or </span>
+                </div>
+                <div class="col-md-5">
+                    <label>Group selection : </label>
+                    <select name="selectCar"  ng-model="selectedGroup">
+                        <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
+                    </select>
+                </div>
+            </div>
         </form>
     </div>
 
