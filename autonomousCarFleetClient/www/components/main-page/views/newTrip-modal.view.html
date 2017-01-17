@@ -15,23 +15,34 @@
                is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"
                alt-input-formats="altInputFormats"/>
         <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open1()"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
-            </span>
+            <button type="button" class="btn btn-default" ng-click="open1()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
     </div>
     <label>Time:</label>
     <div uib-timepicker ng-model="trip.time" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
     <div>
         <form name="selectCarForm">
-            <input type="radio" ng-click="changeCarValue()" ng-checked="carSelectionValue" ><label>Car selection:</label>
-            <select name="selectCar"  ng-model="selectedCar" ng-disabled="!carSelectionValue">
-                <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
-            </select>
-            <span>Or </span>
-            <label>Group selection:</label>
-            <input type="radio" ng-click="changeGroupValue()" ng-checked="groupSelectionValue"><select name="selectCar"  ng-model="selectedGroup" ng-disabled="!groupSelectionValue">
-                <option ng-repeat="groupName in availableGroups" value="{{groupName}}">{{groupName}}</option>
-            </select>
+            <div class="row">
+                <div class="col-md-5">
+                    <input type="radio" ng-click="changeCarValue()" ng-checked="carSelectionValue" >
+                    <label>Car selection : </label>
+                    <select name="selectCar"  ng-model="selectedCar" ng-disabled="!carSelectionValue">
+                        <option ng-repeat="car in cars" value="{{car._id}}">{{car.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <span> or </span>
+                </div>
+                <div class="col-md-5">
+                    <input type="radio" ng-click="changeGroupValue()" ng-checked="groupSelectionValue">
+                    <label>Group selection : </label>
+                    <select name="selectCar"  ng-model="selectedGroup" ng-disabled="!groupSelectionValue">
+                        <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
+                    </select>
+                </div>
+            </div>
         </form>
     </div>
 
