@@ -210,57 +210,57 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					})
 					.catch(err => {
 						console.log(err);
-					})
+					});
 			};
 			$scope.addTrip = () => {
 				//  console.log('cars array ' + JSON.stringify($scope.selectedCars));
-				//$scope.selectedCars.map(car => {
-					const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
-						$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
-					if ($scope.selectedCar !== '' && $scope.selectedGroup === '') {
-			const dataTrip = {
-				departureAddress: $scope.trip.departureAddress.formatted_address,
-				arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-				departureDate: datetime.getTime(),
-				carId: $scope.selectedCar
-			};
-			ApiService.addTrip(dataTrip)
-				.then(trip => {
-				//  $state.reload();
-					$rootScope.modalInstance.close('close');
-					console.log(trip);
-					const carObj = {
-						carId: $scope.selectedCar,
-						used: true
+				//	$scope.selectedCars.map(car => {
+				const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
+					$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
+				if ($scope.selectedCar !== '' && $scope.selectedGroup === '') {
+					const dataTrip = {
+						departureAddress: $scope.trip.departureAddress.formatted_address,
+						arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+						departureDate: datetime.getTime(),
+						carId: $scope.selectedCar
 					};
-					return ApiService.updateUsedCar(carObj);
-				})
-				.then(carResponse => {
-					console.log('car used update successfull');
-					$state.reload('mainpage');
-				})
-				.catch(err => {
-					console.log(err);
-				});
-					} else if ($scope.selectedCar === '' && $scope.selectedGroup !== '') {
-						const groupTrip = {
-							departureAddress: $scope.trip.departureAddress.formatted_address,
-							arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-							departureDate: datetime.getTime(),
-							groupName: $scope.selectedGroup
-						};
-						ApiService.addGroupTrip(groupTrip)
-							.then(trip => {
-								$rootScope.modalInstance.close('close');
-								console.log(trip);
-								return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
-							})
-							.then(groupUpdateResponse => {
-								console.log('group used update successfull');
-								$state.reload('mainpage');
-							})
-							.catch(err => console.log('error getting group trips client'));
-					}
+					ApiService.addTrip(dataTrip)
+						.then(trip => {
+				//  $state.reload();
+							$rootScope.modalInstance.close('close');
+							console.log(trip);
+							const carObj = {
+								carId: $scope.selectedCar,
+								used: true
+							};
+							return ApiService.updateUsedCar(carObj);
+						})
+						.then(carResponse => {
+							console.log('car used update successfull');
+							$state.reload('mainpage');
+						})
+						.catch(err => {
+							console.log(err);
+						});
+				} else if ($scope.selectedCar === '' && $scope.selectedGroup !== '') {
+					const groupTrip = {
+						departureAddress: $scope.trip.departureAddress.formatted_address,
+						arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+						departureDate: datetime.getTime(),
+						groupName: $scope.selectedGroup
+					};
+					ApiService.addGroupTrip(groupTrip)
+						.then(trip => {
+							$rootScope.modalInstance.close('close');
+							console.log(trip);
+							return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
+						})
+						.then(groupUpdateResponse => {
+							console.log('group used update successfull');
+							$state.reload('mainpage');
+						})
+						.catch(err => console.log('error getting group trips client'));
+				}
 			};
 			$scope.group = () => {
 				$rootScope.modalInstance = $uibModal.open({
@@ -289,11 +289,11 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 							$state.reload('mainpage');
 						})
 						.catch(err => console.log(err));
-				})
+				});
 			};
-			$scope.showGroup = (group) => {
+			$scope.showGroup = group => {
 				$scope.cars = [];
-				$scope.groups.forEach((groupy) => {
+				$scope.groups.forEach(groupy => {
 					groupy.show = group === groupy;
 					if (groupy.show) {
 						if (group.name !== 'All cars') {
@@ -324,7 +324,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 										}
 									});
 									timeTravelled(responseCars.cars);
-								})
+								});
 						}
 					}
 				});
@@ -381,9 +381,9 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					})
 					.catch(err => {
 						console.log(err);
-					})
+					});
 			};
 			$scope.cancel = () => {
 				$rootScope.modalInstance.close('close');
-			}
-}]);
+			};
+		}]);

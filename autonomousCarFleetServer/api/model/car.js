@@ -7,19 +7,19 @@ const autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(mongoose.connection);
 
 const carSchema = new mongoose.Schema({
-  name: String,
-  accountId: String,
-  used: Boolean,
-  groupName: String,
-  carNumber: Number,
-  creationDate: Date,
+	name: String,
+	accountId: String,
+	used: Boolean,
+	groupName: String,
+	carNumber: Number,
+	creationDate: Date
 });
 
 carSchema.plugin(autoIncrement.plugin, {
-  model: 'Car',
-  field: 'carNumber',
-  startAt: 1,
-  incrementBy: 1
+	model: 'Car',
+	field: 'carNumber',
+	startAt: 1,
+	incrementBy: 1
 });
 
 module.exports = mongoose.model('Car', carSchema);

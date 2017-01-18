@@ -8,7 +8,7 @@ const Promise = require('bluebird');
 const jwt = require('jwt-simple');
 const Account = require('../../model/account');
 const config = require('../../../config/config');
-const authMethods = require('../../helpers/authMethods');
+const authMethods = require('../../helpers/auth-methods');
 
 module.exports = function () {
 	const router = express.Router();

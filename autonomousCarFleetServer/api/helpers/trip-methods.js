@@ -7,7 +7,7 @@ const Promise = require('bluebird');
 const distance = require('google-distance');
 const async = require('async');
 const Trip = require('../model/trip');
-const carMethods = require('./carMethods');
+const carMethods = require('./car-methods');
 
 const tripMethods = {
 	newTrip(trip) {

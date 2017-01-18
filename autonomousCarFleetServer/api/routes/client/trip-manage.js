@@ -4,11 +4,7 @@
 'use strict';
 
 const express = require('express');
-const Promise = require('bluebird');
-const jwt = require('jwt-simple');
 const passport = require('passport');
-const Account = require('../../model/account');
-const config = require('../../../config/config');
 //  const carMethods = require('../../helpers/carMethods');
 const tripMethods = require('../../helpers/trip-methods');
 
@@ -31,7 +27,7 @@ module.exports = function () {
 				.catch(err => {
 					console.log(err);
 					res.json({success: false, msg: 'Error saving trip'});
-				})
+				});
 		}
 	});
 	router.put('/group', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -97,7 +93,7 @@ module.exports = function () {
 				.catch(err => {
 					console.log(err);
 					res.json({success: false, msg: 'Error getting trip'});
-				})
+				});
 		}
 	});
 	router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {

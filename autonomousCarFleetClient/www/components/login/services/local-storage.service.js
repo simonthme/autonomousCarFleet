@@ -7,7 +7,7 @@ angular.module('starter').service('LocalStorageService', ['$q', '$window', '$htt
 	let authenticated = false;
 	let currentToken = '';
 	const saveUser = user => {
-		if (typeof(Storage) !== 'undefined') {
+		if (typeof (Storage) !== 'undefined') {
 			$window.localStorage.setItem('user', JSON.stringify(user));
 		} else {
 			console.log('browser does not support local storage');
@@ -15,7 +15,7 @@ angular.module('starter').service('LocalStorageService', ['$q', '$window', '$htt
 	};
 	const getUser = () => {
 		const deffered = $q.defer();
-		if (typeof(Storage) !== 'undefined') {
+		if (typeof (Storage) !== 'undefined') {
 			const user = JSON.parse($window.localStorage.getItem('user'));
 			if (user !== null) {
 				deffered.resolve(user);
@@ -29,16 +29,16 @@ angular.module('starter').service('LocalStorageService', ['$q', '$window', '$htt
 		return deffered.promise;
 	};
 	const removeLocalStorage = () => {
-		if (typeof(Storage) !== 'undefined') {
+		if (typeof (Storage) !== 'undefined') {
 			$window.localStorage.removeItem('user');
 			$window.localStorage.removeItem('token');
 		} else {
 			console.log('browser does not support local storage, data not removed');
 		}
 	};
-  return {
-	saveUser: saveUser,
-	getUser: getUser,
-	removeLocalStorage: removeLocalStorage
-  }
+	return {
+		saveUser: saveUser,
+		getUser: getUser,
+		removeLocalStorage: removeLocalStorage
+	};
 }]);

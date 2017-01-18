@@ -7,13 +7,10 @@ const app = express();
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const config = require('./config/config');
 const passport = require('passport');
-const jwt = require('jwt-simple');
-const routes = require('./api/routes/index');
-const autoIncrement = require('mongoose-auto-increment');
 const cors = require('cors');
-
+const config = require('./config/config');
+const routes = require('./api/routes/index');
 mongoose.Promise = require('bluebird');
 
 const connection = mongoose.connect(config.constant.mongoUrl)
@@ -24,7 +21,6 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
 
 app.use(passport.initialize());
 require('./config/passport')(passport);

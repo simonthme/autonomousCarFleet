@@ -24,8 +24,8 @@ module.exports = (function () {
 			return null;
 		}
 	};
-	router.use(function(req, res, next) {
-		if (req.path == '/login' || req.path == '/register') {
+	router.use(function (req, res, next) {
+		if (req.path === '/login' || req.path === '/register') {
 			return next();
 		}
 		const token = getToken(req.headers);
@@ -33,8 +33,10 @@ module.exports = (function () {
 			const decoded = jwt.decode(token, config.constant.jwtSecret);
 			Account.findOne({
 				userName: decoded.userName
-			}, function(err, account) {
-				if (err) throw err;
+			}, function (err, account) {
+				if (err) {
+					throw err;
+				}
 				if (!account) {
 					return res.status(403).send({success: false, msg: 'Authentification failed. Account not found.'});
 				} else {

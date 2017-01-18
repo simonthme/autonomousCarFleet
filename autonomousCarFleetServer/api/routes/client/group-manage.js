@@ -4,12 +4,8 @@
 'use strict';
 
 const express = require('express');
-const Promise = require('bluebird');
-const jwt = require('jwt-simple');
 const passport = require('passport');
-const Account = require('../../model/account');
-const config = require('../../../config/config');
-const carMethods = require('../../helpers/carMethods');
+const carMethods = require('../../helpers/car-methods');
 
 module.exports = function () {
 	const router = new express.Router();
@@ -43,7 +39,7 @@ module.exports = function () {
 				if (cars.length > 0) {
 					cars.forEach(car => {
 						car.used = true;
-						return carMethods.updateOneCar(car._id, car)
+						return carMethods.updateOneCar(car._id, car);
 					});
 				} else {
 					res.json({success: false, msg: 'No cars found in group'});

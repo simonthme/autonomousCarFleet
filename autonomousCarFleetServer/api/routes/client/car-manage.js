@@ -4,12 +4,9 @@
 'use strict';
 
 const express = require('express');
-const Promise = require('bluebird');
-const jwt = require('jwt-simple');
-const Account = require('../../model/account');
-const config = require('../../../config/config');
-const carMethods = require('../../helpers/carMethods');
+
 const passport = require('passport');
+const carMethods = require('../../helpers/car-methods');
 
 module.exports = function () {
 	const router = new express.Router();
@@ -69,24 +66,24 @@ module.exports = function () {
 				});
 		}
 	});
-	  // router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
-	  //   console.log('before account id');
-	  //   //const accountId = req.header.accountId;
-	  //   console.log(accountId);
-	  //   // carMethods.findAccountCars(accountId)
-	  //   //   .then(carArray => {
-	  //   //     if (carArray.length > 0) {
-	  //   //       res.json({success: true, msg:'Successfully found cars for current account', carArray: carArray});
-	  //   //     } else {
-	  //   //       res.json({success: false, msg:'No cars found'});
-	  //   //     }
-	  //   //   })
-	  //   //   .catch(err => {
-	  //   //     console.log(err);
-	  //   //     res.json({success: false, msg:'Error finding cars per account'});
-	  //   //   })
-	  //
-	  // });
+	// router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
+	//   console.log('before account id');
+	//   //const accountId = req.header.accountId;
+	//   console.log(accountId);
+	//   // carMethods.findAccountCars(accountId)
+	//   //   .then(carArray => {
+	//   //     if (carArray.length > 0) {
+	//   //       res.json({success: true, msg:'Successfully found cars for current account', carArray: carArray});
+	//   //     } else {
+	//   //       res.json({success: false, msg:'No cars found'});
+	//   //     }
+	//   //   })
+	//   //   .catch(err => {
+	//   //     console.log(err);
+	//   //     res.json({success: false, msg:'Error finding cars per account'});
+	//   //   })
+	//
+	// });
 	router.delete('/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
 		console.log(req.params.id);
 		if (!req.params.id) {
