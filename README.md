@@ -18,6 +18,5 @@ node server.js (to start server)
 Use postman or a navigator to execute the http requests. 
 
 </content>
+
 </snippet>
-
-
