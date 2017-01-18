@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('starter').service('LocalStorageService', ['$q', '$window', '$http', function ($q, $window, $http) {
-	let authenticated = false;
-	let currentToken = '';
+	//let authenticated = false;
+	//let currentToken = '';
 	const saveUser = user => {
 		if (typeof (Storage) !== 'undefined') {
 			$window.localStorage.setItem('user', JSON.stringify(user));
