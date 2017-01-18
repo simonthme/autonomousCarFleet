@@ -51,10 +51,7 @@
         <div class="panel-body">
             <div ng-repeat="car in cars | orderBy: car.carNumber" class="well">
                 <div class="row">
-                    <div class="col-md-1">
-                        <input type="checkbox">
-                    </div>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                         <label>{{car.name}}</label>
                     </div>
                     <div class="col-md-2" align="center">
@@ -71,7 +68,7 @@
             <h3>Trips</h3>
         </div>
         <div class="panel-body">
-            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber track by $index" class="well">
+            <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber " class="well">
                 <div>
                     <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
                     <label>{{carTrip.name}}</label>
