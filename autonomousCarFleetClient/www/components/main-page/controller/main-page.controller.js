@@ -12,17 +12,17 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				departureAddress: '',
 				arrivalAddress: ''
 			};
-			//$scope.showCar = false;
+			//	$scope.showCar = false;
 			$scope.carSelectionValue = true;
 			$scope.groupSelectionValue = false;
 			$scope.selectedCar = '';
 			$scope.selectedGroup = '';
-      $scope.selectedGroupCars = [];
-      $scope.availableGroups = [];
+			$scope.selectedGroupCars = [];
+			$scope.availableGroups = [];
 			$scope.carTrips = [];
 			$scope.cars = [];
-      $scope.stringGroups = [];
-      $scope.groups = [{name: 'All cars', show: true}];
+			$scope.stringGroups = [];
+			$scope.groups = [{name: 'All cars', show: true}];
 			$scope.trip.time = new Date();
 			$scope.hstep = 1;
 			$scope.mstep = 1;
@@ -41,19 +41,18 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				$scope.carSelectionValue = true;
 				$scope.groupSelectionValue = false;
 			};
-      $scope.changeGroupValue = () => {
-        $scope.carSelectionValue = false;
-        $scope.groupSelectionValue = true;
-      };
+			$scope.changeGroupValue = () => {
+				$scope.carSelectionValue = false;
+				$scope.groupSelectionValue = true;
+			};
 			const displayCars = () => {
 				return $q((resolve, reject) => {
 					ApiService.getCars()
 						.then(responseCar => {
 							responseCar.cars.map(car => {
 								if (car.groupName && $scope.stringGroups.indexOf(car.groupName) === -1) {
-									 $scope.stringGroups.push(car.groupName);
-									}
-
+									$scope.stringGroups.push(car.groupName);
+								}
 								if (!car.used) {
 									car.maker = car.name;
 									car.ticked = false;
@@ -62,27 +61,26 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 							});
 							console.log($scope.stringGroups);
 							angular.forEach($scope.stringGroups, name => {
-                  $scope.groups.push({name: name, show: false});
+								$scope.groups.push({name: name, show: false});
 							});
-
-              $scope.availableGroups = [];
-              $scope.stringGroups.map(group => {
-                let groupAvailable = true;
-                ApiService.getGroupCars({groupName: group})
-                  .then(response => {
-                    response.cars.map(car => {
-                      if (car.used) {
-                        console.log('group not available');
-                        groupAvailable = false;
-                      }
-                    });
-                    if (groupAvailable) {
-                      console.log('ok group available');
-                      $scope.availableGroups.push(group);
-                    }
-                  })
-                  .catch(err => console.log('error getting gorup cars for used'));
-              });
+							$scope.availableGroups = [];
+							$scope.stringGroups.map(group => {
+								let groupAvailable = true;
+								ApiService.getGroupCars({groupName: group})
+									.then(response => {
+										response.cars.map(car => {
+											if (car.used) {
+												console.log('group not available');
+												groupAvailable = false;
+											}
+										});
+										if (groupAvailable) {
+											console.log('ok group available');
+											$scope.availableGroups.push(group);
+										}
+									})
+									.catch(err => console.log('error getting gorup cars for used'));
+							});
 							resolve(responseCar.cars);
 						})
 						.catch(err => {
@@ -128,9 +126,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 						});
 				}
 				return pourcentage;
-
 			};
-
 			const timeTravelled = carArray => {
 				$scope.carTrips = [];
 				carArray.map(car => {
@@ -222,43 +218,43 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
 						$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
 					if ($scope.selectedCar !== '' && $scope.selectedGroup === '') {
-            const dataTrip = {
-              departureAddress: $scope.trip.departureAddress.formatted_address,
-              arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-              departureDate: datetime.getTime(),
-              carId: $scope.selectedCar,
-            };
-            ApiService.addTrip(dataTrip)
-              .then(trip => {
-                //  $state.reload();
-                $rootScope.modalInstance.close('close');
-                console.log(trip);
-                const carObj = {
-                  carId: $scope.selectedCar,
-                  used: true
-                };
-                return ApiService.updateUsedCar(carObj);
-              })
-              .then(carResponse => {
-                console.log('car used update successfull');
-                $state.reload('mainpage');
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else if ($scope.selectedCar === '' && $scope.selectedGroup !== '') {
-            const groupTrip = {
-              departureAddress: $scope.trip.departureAddress.formatted_address,
-              arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-              departureDate: datetime.getTime(),
-              groupName: $scope.selectedGroup,
-            };
+			const dataTrip = {
+				departureAddress: $scope.trip.departureAddress.formatted_address,
+				arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+				departureDate: datetime.getTime(),
+				carId: $scope.selectedCar
+			};
+			ApiService.addTrip(dataTrip)
+				.then(trip => {
+				//  $state.reload();
+					$rootScope.modalInstance.close('close');
+					console.log(trip);
+					const carObj = {
+						carId: $scope.selectedCar,
+						used: true
+					};
+					return ApiService.updateUsedCar(carObj);
+				})
+				.then(carResponse => {
+					console.log('car used update successfull');
+					$state.reload('mainpage');
+				})
+				.catch(err => {
+					console.log(err);
+				});
+					} else if ($scope.selectedCar === '' && $scope.selectedGroup !== '') {
+						const groupTrip = {
+							departureAddress: $scope.trip.departureAddress.formatted_address,
+							arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+							departureDate: datetime.getTime(),
+							groupName: $scope.selectedGroup
+						};
 						ApiService.addGroupTrip(groupTrip)
 							.then(trip => {
-                $rootScope.modalInstance.close('close');
-                console.log(trip);
-                return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName})
-              })
+								$rootScope.modalInstance.close('close');
+								console.log(trip);
+								return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
+							})
 							.then(groupUpdateResponse => {
 								console.log('group used update successfull');
 								$state.reload('mainpage');
@@ -266,76 +262,73 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 							.catch(err => console.log('error getting group trips client'));
 					}
 			};
-      $scope.group = () => {
-        $rootScope.modalInstance = $uibModal.open({
-          templateUrl: 'components/main-page/views/newGroup-modal.view.html',
-          scope: $scope,
-          controller: 'MainPageCtrl',
-          resolve: {
-            scopeParent: function () {
-              return $scope;
-            },
-            modalId: function () {
-              return $scope.modalId;
-            }
-          }
-        });
-      };
-      $scope.addGroup = (groupName) => {
-        $scope.selectedGroupCars.map(car => {
-          ApiService.createGroup({
-            groupName: groupName,
-            carId: car._id
-          })
-            .then((response) => {
-              $rootScope.modalInstance.close('close');
-              console.log('group car updated successfully' + response);
-              $state.reload('mainpage');
-            })
-            .catch(err => console.log(err));
-        })
-      };
-      $scope.showGroup = (group) => {
-				$scope.cars = [];
-        $scope.groups.forEach((groupy) => {
-					groupy.show = group === groupy;
-          if (groupy.show) {
-
-          	if (group.name !== 'All cars') {
-              console.log(group);
-              ApiService.getGroupCars({groupName: group.name})
-                .then(responseCar => {
-                  responseCar.cars.map(car => {
-                    if (!car.used) {
-                      car.maker = car.name;
-                      car.ticked = false;
-                      $scope.cars.push(car);
-                    }
-                  });
-                  timeTravelled(responseCar.cars);
-                })
-                .catch(err => {
-                  reject(err);
-                  console.log(err);
-                });
-            } else {
-              ApiService.getCars()
-                .then(responseCars => {
-                  responseCars.cars.map(car => {
-                    if (!car.used) {
-                      car.maker = car.name;
-                      car.ticked = false;
-                      $scope.cars.push(car);
-                    }
-                  });
-									timeTravelled(responseCars.cars);
-                })
+			$scope.group = () => {
+				$rootScope.modalInstance = $uibModal.open({
+					templateUrl: 'components/main-page/views/newGroup-modal.view.html',
+					scope: $scope,
+					controller: 'MainPageCtrl',
+					resolve: {
+						scopeParent: function () {
+							return $scope;
+						},
+						modalId: function () {
+							return $scope.modalId;
 						}
-          }
-
-        });
-
-      };
+					}
+				});
+			};
+			$scope.addGroup = groupName => {
+				$scope.selectedGroupCars.map(car => {
+					ApiService.createGroup({
+						groupName: groupName,
+						carId: car._id
+					})
+						.then(response => {
+							$rootScope.modalInstance.close('close');
+							console.log('group car updated successfully' + response);
+							$state.reload('mainpage');
+						})
+						.catch(err => console.log(err));
+				})
+			};
+			$scope.showGroup = (group) => {
+				$scope.cars = [];
+				$scope.groups.forEach((groupy) => {
+					groupy.show = group === groupy;
+					if (groupy.show) {
+						if (group.name !== 'All cars') {
+							console.log(group);
+							ApiService.getGroupCars({groupName: group.name})
+								.then(responseCar => {
+									responseCar.cars.map(car => {
+										if (!car.used) {
+											car.maker = car.name;
+											car.ticked = false;
+											$scope.cars.push(car);
+										}
+									});
+									timeTravelled(responseCar.cars);
+								})
+								.catch(err => {
+									reject(err);
+									console.log(err);
+								});
+						} else {
+							ApiService.getCars()
+								.then(responseCars => {
+									responseCars.cars.map(car => {
+										if (!car.used) {
+											car.maker = car.name;
+											car.ticked = false;
+											$scope.cars.push(car);
+										}
+									});
+									timeTravelled(responseCars.cars);
+								})
+						}
+					}
+				});
+			};
 			$scope.dateOptions = {
 				//  dateDisabled: disabled,
 				formatYear: 'yy',
@@ -354,7 +347,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 			};
 			$scope.today();
 			$scope.popup1 = {
-			opened: false
+				opened: false
 			};
 			$scope.autocompleteOptions = {
 				componentRestrictions: {country: 'fr'},
@@ -390,7 +383,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 						console.log(err);
 					})
 			};
-
 			$scope.cancel = () => {
 				$rootScope.modalInstance.close('close');
 			}

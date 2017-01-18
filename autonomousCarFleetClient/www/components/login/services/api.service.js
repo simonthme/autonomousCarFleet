@@ -54,7 +54,7 @@ angular.module('starter')
 	};
 	const logout = () => {
 		authenticated = false;
-		currentToken= '';
+		currentToken = '';
 	};
 	const register = account => {
 		return $q((resolve, reject) => {
@@ -74,7 +74,7 @@ angular.module('starter')
 	};
 	const getCars = () => {
 		return $q((resolve, reject) => {
-			$http.get(ApiUrl.url + '/car', {handleError:true})
+			$http.get(ApiUrl.url + '/car', {handleError: true})
 				.then(response => {
 					if (response.data.success) {
 						resolve(response.data);
@@ -87,7 +87,7 @@ angular.module('starter')
 				});
 		});
 	};
-	const addCar = (car) => {
+	const addCar = car => {
 		return $q((resolve, reject) => {
 			$http.put(ApiUrl.url + '/car', car)
 				.then(response => {
@@ -119,20 +119,20 @@ angular.module('starter')
 		});
 	};
 	const addGroupTrip = trip => {
-    return $q((resolve, reject) => {
-      $http.put(ApiUrl.url + '/trip/group', trip)
-        .then(response => {
-          console.log(response);
-          if (response.data.success) {
-            resolve(response.data);
-          } else {
-            reject();
-          }
-        })
-        .catch(err => {
-          console.log('error put trip' + err);
-        });
-    });
+		return $q((resolve, reject) => {
+			$http.put(ApiUrl.url + '/trip/group', trip)
+				.then(response => {
+					console.log(response);
+					if (response.data.success) {
+						resolve(response.data);
+					} else {
+						reject();
+					}
+				})
+				.catch(err => {
+					console.log('error put trip' + err);
+				});
+		});
 	};
 	const getCar = id => {
 		return $q((resolve, reject) => {
@@ -198,20 +198,20 @@ angular.module('starter')
 		});
 	};
 	const updateGroupUsedCar = groupName => {
-    return $q((resolve, reject) => {
-      $http.patch(ApiUrl.url + '/group', groupName)
-        .then(response => {
-          console.log(response);
-          if (response.data.success) {
-            resolve(response.data);
-          } else {
-            reject();
-          }
-        })
-        .catch(err => {
-          console.log('error get trip car' + err);
-        });
-    });
+		return $q((resolve, reject) => {
+			$http.patch(ApiUrl.url + '/group', groupName)
+				.then(response => {
+					console.log(response);
+					if (response.data.success) {
+						resolve(response.data);
+					} else {
+						reject();
+					}
+				})
+				.catch(err => {
+					console.log('error get trip car' + err);
+				});
+		});
 	};
 	const deleteCar = carId => {
 		return $q((resolve, reject) => {
@@ -229,58 +229,56 @@ angular.module('starter')
 				});
 		});
 	};
-  const createGroup = (groupObj) => {
-    return $q((resolve, reject) => {
-      $http.patch(ApiUrl.url + '/group/' + groupObj.carId, groupObj)
-        .then((response) => {
-          console.log(response);
-          if (response.data.success) {
-            resolve(response.data);
-          } else {
-            reject();
-          }
-        })
-        .catch(err => {
-          console.log('error creating group' + err);
-        })
-    });
-  };
-
-  const getGroupCars = (groupName) => {
-    return $q((resolve, reject) => {
-      $http.post(ApiUrl.url + '/group', groupName)
-        .then((response) => {
-          console.log(response);
-          if (response.data.success) {
-            resolve(response.data);
-          } else {
-            reject();
-          }
-        })
-        .catch(err => {
-          console.log('error creating group' + err);
-        })
-    });
-  };
+	const createGroup = groupObj => {
+		return $q((resolve, reject) => {
+			$http.patch(ApiUrl.url + '/group/' + groupObj.carId, groupObj)
+				.then((response) => {
+					console.log(response);
+					if (response.data.success) {
+						resolve(response.data);
+					} else {
+						reject();
+					}
+				})
+				.catch(err => {
+					console.log('error creating group' + err);
+				});
+		});
+	};
+	const getGroupCars = groupName => {
+		return $q((resolve, reject) => {
+			$http.post(ApiUrl.url + '/group', groupName)
+				.then(response => {
+					console.log(response);
+					if (response.data.success) {
+						resolve(response.data);
+					} else {
+						reject();
+					}
+				})
+				.catch(err => {
+					console.log('error creating group' + err);
+				});
+		});
+	};
 	return {
-	login: login,
-	register: register,
-	getCars: getCars,
-	saveToken: saveToken,
-	getToken: getToken,
-	isLoggedIn: isLoggedIn,
-	addCar: addCar,
-	addTrip: addTrip,
+		login: login,
+		register: register,
+		getCars: getCars,
+		saveToken: saveToken,
+		getToken: getToken,
+		isLoggedIn: isLoggedIn,
+		addCar: addCar,
+		addTrip: addTrip,
 		addGroupTrip: addGroupTrip,
-	getCar: getCar,
-	getCarTrip: getCarTrip,
-	tripFinished: tripFinished,
-	updateUsedCar: updateUsedCar,
-    updateGroupUsedCar:updateGroupUsedCar,
-	logout: logout,
-	deleteCar: deleteCar,
-    createGroup:createGroup,
-    getGroupCars: getGroupCars,
-
-  };
+		getCar: getCar,
+		getCarTrip: getCarTrip,
+		tripFinished: tripFinished,
+		updateUsedCar: updateUsedCar,
+		updateGroupUsedCar: updateGroupUsedCar,
+		logout: logout,
+		deleteCar: deleteCar,
+		createGroup: createGroup,
+		getGroupCars: getGroupCars
+	};
 }]);
