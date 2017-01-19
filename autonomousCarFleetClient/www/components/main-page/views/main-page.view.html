@@ -31,9 +31,13 @@
                 <div class="col-md-1">
                     <input type="radio" ng-click="showGroup(group)" ng-checked="group.show"/>
                 </div>
-                <div class="col-md-11">
+                <div class="col-md-2">
                     <label>{{group.name}}</label>
-                    <button ng-if="group.name !== 'All cars'" ng-click="deleteGroup(group.name)">Delete group and cars</button>
+                </div>
+                    <div class="col-md-9">
+                    <button type="button" class="btn btn-danger btn-xs" ng-if="group.name !== 'All cars'" ng-click="deleteGroup(group.name)">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
                 </div>
                 </div>
             </div>
@@ -70,14 +74,25 @@
         </div>
         <div class="panel-body">
             <div ng-repeat="carTrip in carTrips | orderBy: car.carNumber " class="well">
-                <div>
-                    <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
-                    <label>{{carTrip.name}}</label>
+                <div class="row">
+                    <div class="col-md-1">
+                        <input type="checkbox" ng-change="markerVisible(carTrip, visibleMarker)" ng-model="visibleMarker">
+                    </div>
+                    <div class="col-md-8">
+                        <label>{{carTrip.name}}</label>
+                    </div>
+                    <div class="col-md-3" align="right">
+                        <button class="btn btn-danger btn-xs " ng-click="endTrip(carTrip)">End Trip</button>
+                    </div>
                 </div>
                 <div>
                    <label>Current trip:</label>
-                    <span> <uib-progressbar max="100" value="carTrip.timeDone"><span style="color:white; white-space:nowrap;">
-                        {{carTrip.timeDone}} %</span></uib-progressbar></span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                             aria-valuenow="carTrip.timeDone" aria-valuemin="0" aria-valuemax="100" style="width:{{carTrip.timeDone}}%">
+                            {{carTrip.timeDone}} %</span>
+                        </div>
+                    </div>
                     <table>
                         <tr>
                             <th width="100px"> From : </th>
@@ -96,7 +111,6 @@
                             <td>{{carTrip.tripTime}}</td>
                         </tr>
                     </table>
-                    <button class="btn btn-danger" ng-click="endTrip(carTrip)">End the trip</button>
                 </div>
             </div>
         </div>
