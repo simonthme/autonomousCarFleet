@@ -64,21 +64,21 @@ module.exports = function () {
 				res.json({success: false, msg: 'Error getting all trips'});
 			});
 	});
-	router.get('/last/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
+	router.get('/last/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
 		console.log('GET LAST TRIP');
-    tripMethods.findOneLastTrip(req.params.id)
-      .then(trip => {
-      	console.log('last TRIP :: ' + JSON.stringify(trip));
-        if (trip) {
-          res.json({success: true, msg: 'Successfully found last trip', trip: trip});
-        } else {
-          res.json({success: false, msg: 'Trip not found'});
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        res.json({success: false, msg: 'Error getting last trip'});
-      });
+		tripMethods.findOneLastTrip(req.params.id)
+			.then(trip => {
+				console.log('last TRIP :: ' + JSON.stringify(trip));
+				if (trip) {
+					res.json({success: true, msg: 'Successfully found last trip', trip: trip});
+				} else {
+					res.json({success: false, msg: 'Trip not found'});
+				}
+			})
+			.catch(err => {
+				console.log(err);
+				res.json({success: false, msg: 'Error getting last trip'});
+			});
 	});
 	router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 		tripMethods.findAllTrips()

@@ -20,7 +20,7 @@ const carMethods = {
 			newCar.save()
 				.then(carData => resolve(carData))
 				.catch(err => reject(err));
-		})
+		});
 	},
 	findAllCars(id) {
 		return Car.find({accountId: id}).exec();

@@ -100,7 +100,7 @@ angular.module('starter.mainpage')
 
 					scope.$on('initMap', () => {
 						initialize();
-					})
+					});
 				}
 			};
 		}]);
