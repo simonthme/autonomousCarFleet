@@ -9,6 +9,6 @@ To install all modules and run server:
 ```
 bower install
 npm install
-```
+
     </content>
 </snippet>
