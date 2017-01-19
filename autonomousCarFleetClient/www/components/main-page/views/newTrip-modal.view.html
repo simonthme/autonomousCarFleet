@@ -39,7 +39,7 @@
                     <input type="radio" ng-click="changeGroupValue()" ng-checked="groupSelectionValue">
                     <label>Group selection : </label>
                     <select name="selectCar"  ng-model="selectedGroup" ng-disabled="!groupSelectionValue">
-                        <option ng-repeat="groupName in stringGroups" value="{{groupName}}">{{groupName}}</option>
+                        <option ng-repeat="groupName in availableGroups" value="{{groupName}}">{{groupName}}</option>
                     </select>
                 </div>
             </div>

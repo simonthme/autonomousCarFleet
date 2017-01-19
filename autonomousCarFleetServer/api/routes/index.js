@@ -2,7 +2,7 @@
  * Created by simonthome on 06/11/2016.
  */
 'use strict';
-const router = require('express').router();
+const router = require('express').Router();
 const jwt = require('jwt-simple');
 const config = require('../../config/config');
 const Account = require('../model/account');

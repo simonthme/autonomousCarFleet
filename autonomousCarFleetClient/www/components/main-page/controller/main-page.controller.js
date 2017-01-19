@@ -12,7 +12,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				departureAddress: '',
 				arrivalAddress: ''
 			};
-			//	$scope.showCar = false;
 			$scope.carSelectionValue = true;
 			$scope.groupSelectionValue = false;
 			$scope.selectedCar = '';
@@ -70,12 +69,10 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 									.then(response => {
 										response.cars.map(car => {
 											if (car.used) {
-												console.log('group not available');
 												groupAvailable = false;
 											}
 										});
 										if (groupAvailable) {
-											console.log('ok group available');
 											$scope.availableGroups.push(group);
 										}
 									})
@@ -101,11 +98,8 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				currentDate.setSeconds(0);
 				const timeDone = Math.round(currentDate.getTime() - depDate) / 60000;
 				const pourcentage = Math.round((timeDoneSec / trip.durationValue) * 100);
-				console.log(' %%%% ' + pourcentage + 'time done sec: ' + timeDoneSec + 'time value trip : ' + trip.durationValue);
 				if (Math.round((car.tripDurationValue / 60)) <= timeDone && !car.finished) {
 					car.finished = true;
-					// $state.reload('mainpage');
-					console.log('Finishing trip request ');
 					ApiService.tripFinished({
 						arrivalDate: car.tripDepartureDate + (car.tripDurationValue * 1000)
 					}, trip._id)
@@ -117,7 +111,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 							return ApiService.updateUsedCar(carObj);
 						})
 						.then(() => {
-							console.log('updated arrival date success');
 							displayCars();
 							$state.reload('mainpage');
 						})
@@ -128,12 +121,14 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				return pourcentage;
 			};
 			const timeTravelled = carArray => {
+        return $q((resolve, reject) => {
 				$scope.carTrips = [];
 				carArray.map(car => {
 					ApiService.getCarTrip(car._id)
 						.then(tripResponse => {
 							tripResponse.trips.map(trip => {
 								if (typeof trip.arrivalDate === 'undefined') {
+								  car.tripId = trip._id;
 									car.tripDistance = trip.distance;
 									car.tripTime = trip.duration;
 									car.tripDepartureAddress = trip.departureAddress;
@@ -142,12 +137,11 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 									car.tripDurationValue = trip.durationValue;
 									car.tripDistanceValue = trip.distanceValue;
 									car.tripGroup = trip.groupName;
-									//  car.tripId = trip._id;
 									car.tripMarker = new google.maps.Marker({
 										position: new google.maps.LatLng(48.858093, 2.294694),
 										icon: carMarker,
 										draggable: false,
-										visible: false
+										visible: false,
 									});
 									car.tripPolyline = new google.maps.Polyline({
 										path: [],
@@ -159,18 +153,28 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 									});
 									$interval(() => {
 										car.timeDone = getTimeDone(car, trip);
-									}, 2000);
+									}, 1000);
 									$scope.carTrips.push(car);
+                  if ($scope.carTrips.length === carArray.length) {
+                    resolve();
+                  }
 								}
 							});
 						})
 						.catch(err => console.log(err));
 				});
+        });
 			};
 			displayCars()
 				.then(carArray => {
-					timeTravelled(carArray);
-				});
+					return timeTravelled(carArray);
+				})
+        .then(() => {
+          console.log('displaying trips');
+        })
+        .catch(err =>{
+          console.log('error in time Travelled');
+        });
 			$scope.newCar = () => {
 				$rootScope.modalInstance = $uibModal.open({
 					templateUrl: 'components/main-page/views/newCar-modal.view.html',
@@ -204,7 +208,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 			$scope.addCar = carName => {
 				ApiService.addCar({name: carName})
 					.then(responseCar => {
-						console.log(responseCar);
 						$state.reload('mainpage');
 						$rootScope.modalInstance.close('close');
 					})
@@ -213,8 +216,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					});
 			};
 			$scope.addTrip = () => {
-				//  console.log('cars array ' + JSON.stringify($scope.selectedCars));
-				//	$scope.selectedCars.map(car => {
 				const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
 					$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
 				if ($scope.selectedCar !== '' && $scope.selectedGroup === '') {
@@ -226,7 +227,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					};
 					ApiService.addTrip(dataTrip)
 						.then(trip => {
-				//  $state.reload();
 							$rootScope.modalInstance.close('close');
 							console.log(trip);
 							const carObj = {
@@ -285,7 +285,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					})
 						.then(response => {
 							$rootScope.modalInstance.close('close');
-							console.log('group car updated successfully' + response);
 							$state.reload('mainpage');
 						})
 						.catch(err => console.log(err));
@@ -297,7 +296,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					groupy.show = group === groupy;
 					if (groupy.show) {
 						if (group.name !== 'All cars') {
-							console.log(group);
 							ApiService.getGroupCars({groupName: group.name})
 								.then(responseCar => {
 									responseCar.cars.map(car => {
@@ -307,28 +305,27 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 											$scope.cars.push(car);
 										}
 									});
-									timeTravelled(responseCar.cars);
+									timeTravelled(responseCar.cars)
+                    .then(() => {
+									  $rootScope.$broadcast('initMap');
+                      $scope.carTrips.map(carTrip => {
+                        carTrip.tripMarker.setVisible(false);
+                        carTrip.tripPolyline.setMap(null);
+                      });
+
+                    })
 								})
 								.catch(err => {
 									reject(err);
 									console.log(err);
 								});
 						} else {
-							ApiService.getCars()
-								.then(responseCars => {
-									responseCars.cars.map(car => {
-										if (!car.used) {
-											car.maker = car.name;
-											car.ticked = false;
-											$scope.cars.push(car);
-										}
-									});
-									timeTravelled(responseCars.cars);
-								});
+              $state.reload('mainpage');
 						}
 					}
 				});
 			};
+
 			$scope.dateOptions = {
 				//  dateDisabled: disabled,
 				formatYear: 'yy',
@@ -376,13 +373,45 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 			$scope.deleteCar = carId => {
 				ApiService.deleteCar(carId)
 					.then(response => {
-						console.log(response);
 						$state.reload('mainpage');
 					})
 					.catch(err => {
 						console.log(err);
 					});
 			};
+			$scope.deleteGroup = groupName => {
+				ApiService.getGroupCars({groupName: groupName})
+					.then(response => {
+						response.cars.map(car => {
+							ApiService.deleteCar(car._id)
+                .then(response => {
+                  $state.reload('mainpage');
+                })
+                .catch(err => {
+                  console.log(err);
+                })
+						});
+					})
+			};
+			$scope.endTrip = (carTrip) => {
+        ApiService.tripFinished({
+          arrivalDate: carTrip.tripDepartureDate + (carTrip.tripDurationValue * 1000)
+        }, carTrip.tripId)
+          .then(response => {
+            const carObj = {
+              carId: carTrip._id,
+              used: false
+            };
+            return ApiService.updateUsedCar(carObj);
+          })
+          .then(() => {
+            displayCars();
+            $state.reload('mainpage');
+          })
+          .catch(err => {
+            console.log('error in tripFinished');
+          });
+      };
 			$scope.cancel = () => {
 				$rootScope.modalInstance.close('close');
 			};

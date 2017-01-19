@@ -15,6 +15,7 @@ const tripSchema = new mongoose.Schema({
 	durationValue: Number,
 	departureDate: Date,
 	arrivalDate: Date,
+	intermediaryTrip: Boolean,
 	creationDate: Date
 });
 

@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('starter.mainpage')
-	.directive('map', ['$rootScope', 'ApiService', '$uibModal', '$interval', '$timeout', '$window',
-		function ($rootScope, ApiService, $uibModal, $interval, $timeout, $window) {
+	.directive('map', ['$rootScope', 'ApiService', '$uibModal', '$interval', '$timeout',
+		function ($rootScope, ApiService, $uibModal, $interval, $timeout) {
 			return {
 				restrict: 'A',
 				link: function (scope, element, attrs) {
@@ -23,22 +23,17 @@ angular.module('starter.mainpage')
 							disableDefaultUI: true,
 							maxZoom: 17
 						};
-						let map = new google.maps.Map(element[0], mapOptions);
+						scope.map = new google.maps.Map(element[0], mapOptions);
 						scope.markerVisible = (carTrip, visibleMarker) => {
 							carTrip.tripMarker.setVisible(visibleMarker);
 							if (visibleMarker) {
-								carTrip.tripPolyline.setMap(map);
+								carTrip.tripPolyline.setMap(scope.map);
 							} else {
 								carTrip.tripPolyline.setMap(null);
 							}
 						};
-						getDirections(map);
+						getDirections(scope.map);
 					};
-					// const moveMarker = (map, marker, latlng) => {
-					//   console.log("setting position marker: " + latlng);
-					//   marker.setPosition(latlng);
-					// console.log(marker.setPosition(latlng));
-					// };
 					const autoRefresh = (map, pathCoords, tripDist, tripTime, timeDone, marker) => {
 						let i;
 						let z = 0;
@@ -49,14 +44,10 @@ angular.module('starter.mainpage')
 						} else {
 							pointNumber = 0;
 						}
-						console.log('tripTime ' + Math.round(tripTime / pathCoords.length));
 						const updatePath = (i, map, marker, pathCoords) => {
 							$timeout(() => {
-								console.log('updatePath');
 								marker.setPosition(pathCoords[i]);
-								// moveMarker(map, marker, pathCoords[i]);
 							}, Math.round(tripTime / pathCoords.length) * 1000 * z); // to change speed (now realtime)
-							// Math.round(tripTime / pathCoords.length) *
 							z++;
 						};
 						for (i = pointNumber; i < pathCoords.length; i++) {
@@ -92,12 +83,9 @@ angular.module('starter.mainpage')
 											const timeDate = new Date();
 											timeDate.setSeconds(0);
 											timeDate.setMilliseconds(0);
-											console.log('time Date : ' + timeDate);
 											const depDate = new Date(carTrip.tripDepartureDate).getTime();
 											const timeDone = Math.round(timeDate.getTime() - depDate) / 60000;
-											console.log('car time done ' + timeDone);
 											if (timeDone >= 0 && !started) {
-												console.log('car started');
 												started = true;
 												autoRefresh(map, result.routes[0].overview_path, carTrip.tripDistanceValue,
 													carTrip.tripDurationValue, timeDone, carTrip.tripMarker);
@@ -109,6 +97,10 @@ angular.module('starter.mainpage')
 						}, 300);
 					};
 					initialize();
+
+					scope.$on('initMap', () => {
+						initialize();
+					})
 				}
 			};
 		}]);

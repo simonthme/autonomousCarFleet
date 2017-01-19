@@ -95,6 +95,9 @@ const tripMethods = {
 	},
 	updateOneTrip(id, trip) {
 		return Trip.update({_id: id}, trip).exec();
+	},
+	findOneLastTrip(id) {
+		return Trip.findOne({carId: id}).sort({arrivalDate: -1}).exec();
 	}
 };
 
