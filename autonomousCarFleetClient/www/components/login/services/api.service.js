@@ -11,7 +11,7 @@ angular.module('starter')
 		if (typeof (Storage) !== 'undefined') {
 			$window.localStorage.setItem('token', JSON.stringify(token));
 		} else {
-		  console.log('browser does not support local storage');
+			console.log('browser does not support local storage');
 		}
 	};
 	const getToken = () => {
@@ -232,7 +232,7 @@ angular.module('starter')
 	const createGroup = groupObj => {
 		return $q((resolve, reject) => {
 			$http.patch(ApiUrl.url + '/group/' + groupObj.carId, groupObj)
-				.then((response) => {
+				.then(response => {
 					console.log(response);
 					if (response.data.success) {
 						resolve(response.data);

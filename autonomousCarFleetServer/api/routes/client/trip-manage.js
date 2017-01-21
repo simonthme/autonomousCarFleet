@@ -8,7 +8,6 @@ const passport = require('passport');
 //  const carMethods = require('../../helpers/carMethods');
 const tripMethods = require('../../helpers/trip-methods');
 
-
 module.exports = function () {
 	const router = new express.Router();
 	router.put('/', passport.authenticate('jwt', {session: false}), (req, res) => {

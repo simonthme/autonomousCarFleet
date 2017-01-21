@@ -4,9 +4,7 @@
 'use strict';
 
 const express = require('express');
-const Promise = require('bluebird');
 const jwt = require('jwt-simple');
-const Account = require('../../model/account');
 const config = require('../../../config/config');
 const authMethods = require('../../helpers/auth-methods');
 
@@ -26,8 +24,8 @@ module.exports = function () {
 				})
 				.catch(err => {
 					console.log('error creation ' + err);
-				  res.json({
-					  success: false, msg: 'Username already exists', body: req.body});
+					res.json({
+						success: false, msg: 'Username already exists', body: req.body});
 				});
 		}
 	});
@@ -57,7 +55,7 @@ module.exports = function () {
 						});
 					}
 				} else {
-					console.log("Wrong Email");
+					console.log('Wrong Email');
 					res.send({success: false, msg: 'Wrong email'});
 				}
 			})

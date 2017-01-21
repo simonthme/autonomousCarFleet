@@ -6,7 +6,7 @@
 angular.module('starter.login', ['starter.mainpage']);
 angular.module('starter.login').controller('LoginCtrl', ['$scope', '$state', '$q', 'ApiService', 'LocalStorageService', function ($scope, $state, $q, ApiService, LocalStorageService) {
 	$scope.loginAlerts = [];
-	$scope.closeAlert = function(index) {
+	$scope.closeAlert = function (index) {
 		$scope.loginAlerts.splice(index, 1);
 	};
 	$scope.account = {
@@ -24,7 +24,7 @@ angular.module('starter.login').controller('LoginCtrl', ['$scope', '$state', '$q
 					$state.go('mainpage');
 				})
 				.catch(err => {
-				  $scope.loginAlerts.push({msg: 'Mot de passe ou identifiant incorrect', type: 'danger'});
+					$scope.loginAlerts.push({msg: 'Mot de passe ou identifiant incorrect', type: 'danger'});
 				});
 		}
 	};

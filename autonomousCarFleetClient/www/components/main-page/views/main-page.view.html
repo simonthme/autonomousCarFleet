@@ -31,9 +31,13 @@
                 <div class="col-md-1">
                     <input type="radio" ng-click="showGroup(group)" ng-checked="group.show"/>
                 </div>
-                <div class="col-md-11">
+                <div class="col-md-2">
                     <label>{{group.name}}</label>
-                    <button ng-if="group.name !== 'All cars'" ng-click="deleteGroup(group.name)">Delete group and cars</button>
+                </div>
+                    <div class="col-md-9">
+                    <button type="button" class="btn btn-danger btn-xs" ng-if="group.name !== 'All cars'" ng-click="deleteGroup(group.name)">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
                 </div>
                 </div>
             </div>
@@ -97,7 +101,6 @@
                             <td>{{carTrip.tripTime}}</td>
                         </tr>
                     </table>
-                    <button class="btn btn-danger" ng-click="endTrip(carTrip)">End the trip</button>
                 </div>
             </div>
         </div>

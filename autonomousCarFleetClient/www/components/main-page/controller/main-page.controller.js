@@ -79,7 +79,6 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 									})
 									.catch(err => console.log('error getting gorup cars for used'));
 							});
-							console.log('reolving cars ' + JSON.stringify(responseCar.cars));
 							resolve(responseCar.cars);
 						})
 						.catch(err => {
@@ -125,9 +124,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				return pourcentage;
 			};
 			const timeTravelled = carArray => {
-				console.log('CALL of TIME TRAVELLED');
-				console.log('car array tim:e travellerd : : ' + JSON.stringify(carArray));
-        return $q((resolve, reject) => {
+				        return $q((resolve, reject) => {
 				 // $scope.carTrips = [];
 
 				 carArray.map(cary => {
@@ -183,12 +180,12 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				.then(carArray => {
 					return timeTravelled(carArray);
 				})
-        .then(() => {
-          console.log('displaying trips');
-        })
-        .catch(err =>{
-          console.log('error in time Travelled');
-        });
+		.then(() => {
+			console.log('displaying trips');
+		})
+		.catch(err => {
+			console.log('error in time Travelled');
+		});
 			$scope.newCar = () => {
 				$rootScope.modalInstance = $uibModal.open({
 					templateUrl: 'components/main-page/views/newCar-modal.view.html',
@@ -421,21 +418,20 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 										}
 									});
 									timeTravelled(responseCar.cars)
-                    .then(() => {
-									  $rootScope.$broadcast('initMap');
-                      $scope.carTrips.map(carTrip => {
-                        carTrip.tripMarker.setVisible(false);
-                        carTrip.tripPolyline.setMap(null);
-                      });
-
-                    })
+					.then(() => {
+						$rootScope.$broadcast('initMap');
+						$scope.carTrips.map(carTrip => {
+							carTrip.tripMarker.setVisible(false);
+							carTrip.tripPolyline.setMap(null);
+						});
+					});
 								})
 								.catch(err => {
 									reject(err);
 									console.log(err);
 								});
 						} else {
-              $state.reload('mainpage');
+							$state.reload('mainpage');
 						}
 					}
 				});
@@ -499,34 +495,34 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					.then(response => {
 						response.cars.map(car => {
 							ApiService.deleteCar(car._id)
-                .then(response => {
-                  $state.reload('mainpage');
-                })
-                .catch(err => {
-                  console.log(err);
-                })
+				.then(response => {
+					$state.reload('mainpage');
+				})
+				.catch(err => {
+					console.log(err);
+				});
 						});
-					})
+					});
 			};
-			$scope.endTrip = (carTrip) => {
-        ApiService.tripFinished({
-          arrivalDate: carTrip.tripDepartureDate + (carTrip.tripDurationValue * 1000)
-        }, carTrip.tripId)
-          .then(response => {
-            const carObj = {
-              carId: carTrip._id,
-              used: false
-            };
-            return ApiService.updateUsedCar(carObj);
-          })
-          .then(() => {
-            displayCars();
-            $state.reload('mainpage');
-          })
-          .catch(err => {
-            console.log('error in tripFinished');
-          });
-      };
+			$scope.endTrip = carTrip => {
+				ApiService.tripFinished({
+					arrivalDate: carTrip.tripDepartureDate + (carTrip.tripDurationValue * 1000)
+				}, carTrip.tripId)
+					.then(response => {
+						const carObj = {
+							carId: carTrip._id,
+							used: false
+						};
+						return ApiService.updateUsedCar(carObj);
+					})
+					.then(() => {
+						displayCars();
+						$state.reload('mainpage');
+					})
+					.catch(err => {
+						console.log('error in tripFinished');
+					});
+			};
 			$scope.cancel = () => {
 				$rootScope.modalInstance.close('close');
 			};

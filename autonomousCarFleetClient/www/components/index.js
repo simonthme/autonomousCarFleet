@@ -15,19 +15,19 @@ angular.module('starter').run(['ApiService', '$rootScope', '$state', 'LocalStora
 					});
 				}
 			});
-			$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
-				console.log('TO STATE: ' + JSON.stringify(fromState));
-				ApiService.isLoggedIn()
-					.then((isAuth) => {
-						if (!isAuth && _.has(toState, 'data.authorization') && _.has(toState, 'data.redirectTo') &&
-							fromState.url !== '/login') {
-							$state.go(toState.data.redirectTo);
-						}
-					});
-				if ((angular.isUndefined($window.localStorage.getItem('token')) ||
-					$window.localStorage.getItem('token') === null) && _.has(toState, 'data.authorization') &&
-					_.has(toState, 'data.redirectTo')) {
-					$state.go(toState.data.redirectTo);
-				}
-			});
+		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+			console.log('TO STATE: ' + JSON.stringify(fromState));
+			ApiService.isLoggedIn()
+				.then(isAuth => {
+					if (!isAuth && _.has(toState, 'data.authorization') && _.has(toState, 'data.redirectTo') &&
+						fromState.url !== '/login') {
+						$state.go(toState.data.redirectTo);
+					}
+				});
+			if ((angular.isUndefined($window.localStorage.getItem('token')) ||
+				$window.localStorage.getItem('token') === null) && _.has(toState, 'data.authorization') &&
+				_.has(toState, 'data.redirectTo')) {
+				$state.go(toState.data.redirectTo);
+			}
+		});
 	}]);
