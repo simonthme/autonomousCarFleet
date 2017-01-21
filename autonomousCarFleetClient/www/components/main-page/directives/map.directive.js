@@ -56,7 +56,13 @@ angular.module('starter.mainpage')
 					};
 					const getDirections = map => {
 						$timeout(() => {
+							console.log(scope.carTrips);
+							let interTrip = false;
 							scope.carTrips.map(carTrip => {
+								if (carTrip.intermediaryTrip) {
+									console.log('onterrr trip :: ' + JSON.stringify(carTrip));
+									interTrip = true;
+								}
 								let directionsService = new google.maps.DirectionsService();
 								let request = {
 									origin: carTrip.tripDepartureAddress,
@@ -68,8 +74,13 @@ angular.module('starter.mainpage')
 									if (status === google.maps.DirectionsStatus.OK) {
 										console.log(result);
 										carTrip.tripMarker.setPosition(result.routes[0].legs[0].start_location);
+										if (interTrip && carTrip.intermediaryTrip) {
+                      carTrip.tripMarker.setVisible(true);
+										}
+										if (!interTrip) {
+                      carTrip.tripMarker.setVisible(true);
+										}
 										carTrip.tripMarker.setMap(map);
-										carTrip.tripMarker.setVisible(true);
 										carTrip.tripPolyline.setMap(map);
 										markers.push(carTrip.tripMarker);
 										let currentDate = new Date();

@@ -261,6 +261,38 @@ angular.module('starter')
 				});
 		});
 	};
+	const getLastTrip = carId => {
+    return $q((resolve, reject) => {
+      $http.get(ApiUrl.url + '/trip/last/' + carId)
+        .then(response => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error creating group' + err);
+        });
+    });
+	};
+	const getLastGroupTrip = groupName => {
+    return $q((resolve, reject) => {
+      $http.post(ApiUrl.url + '/trip/last/', groupName)
+        .then(response => {
+          console.log(response);
+          if (response.data.success) {
+            resolve(response.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(err => {
+          console.log('error creating group' + err);
+        });
+    });
+	};
 	return {
 		login: login,
 		register: register,
@@ -279,6 +311,8 @@ angular.module('starter')
 		logout: logout,
 		deleteCar: deleteCar,
 		createGroup: createGroup,
-		getGroupCars: getGroupCars
+		getGroupCars: getGroupCars,
+		getLastTrip:getLastTrip,
+		getLastGroupTrip:getLastGroupTrip,
 	};
 }]);

@@ -9,9 +9,11 @@ const async = require('async');
 const Trip = require('../model/trip');
 const carMethods = require('./car-methods');
 
+
 const tripMethods = {
 	newTrip(trip) {
 		return new Promise((resolve, reject) => {
+			console.log(trip);
 			const date = new Date();
 			distance.get({
 				origin: trip.departureAddress,
@@ -30,6 +32,7 @@ const tripMethods = {
 					duration: data.duration,
 					durationValue: data.durationValue,
 					departureDate: trip.departureDate,
+					intermediaryTrip: trip.intermediaryTrip,
 					creationDate: date
 				});
 				newTrip.save()
@@ -60,6 +63,7 @@ const tripMethods = {
 								duration: data.duration,
 								durationValue: data.durationValue,
 								departureDate: trip.departureDate,
+                intermediaryTrip: trip.intermediaryTrip,
 								creationDate: date
 							});
 							newTrip.save()
@@ -98,7 +102,32 @@ const tripMethods = {
 	},
 	findOneLastTrip(id) {
 		return Trip.findOne({carId: id}).sort({arrivalDate: -1}).exec();
+	},
+	findGroupLastTrip(accountId, groupName) {
+		return new Promise((resolve, reject) => {
+		carMethods.findGroupCars(accountId, groupName)
+			.then(cars => {
+				let tempLastGroupTrips = [];
+				async.each(cars, (car, callback) => {
+          this.findOneLastTrip(car._id)
+						.then(trip => {
+							console.log(trip);
+							tempLastGroupTrips.push(trip);
+							callback();
+						})
+				},err => {
+          if (err) {
+          	console.log(err);
+            reject();
+          } else {
+            console.log(JSON.stringify(tempLastGroupTrips));
+            resolve(tempLastGroupTrips);
+          }
+				})
+			})
+    })
 	}
+
 };
 
 module.exports = tripMethods;

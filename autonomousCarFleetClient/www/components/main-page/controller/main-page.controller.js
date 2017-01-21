@@ -48,6 +48,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				return $q((resolve, reject) => {
 					ApiService.getCars()
 						.then(responseCar => {
+							$scope.carTrips = [];
 							responseCar.cars.map(car => {
 								if (car.groupName && $scope.stringGroups.indexOf(car.groupName) === -1) {
 									$scope.stringGroups.push(car.groupName);
@@ -78,6 +79,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 									})
 									.catch(err => console.log('error getting gorup cars for used'));
 							});
+							console.log('reolving cars ' + JSON.stringify(responseCar.cars));
 							resolve(responseCar.cars);
 						})
 						.catch(err => {
@@ -96,9 +98,9 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 					timeDoneSec = 0;
 				}
 				currentDate.setSeconds(0);
-				const timeDone = Math.round(currentDate.getTime() - depDate) / 60000;
 				const pourcentage = Math.round((timeDoneSec / trip.durationValue) * 100);
-				if (Math.round((car.tripDurationValue / 60)) <= timeDone && !car.finished) {
+
+				if (pourcentage >= 100 && !car.finished) {
 					car.finished = true;
 					ApiService.tripFinished({
 						arrivalDate: car.tripDepartureDate + (car.tripDurationValue * 1000)
@@ -108,7 +110,9 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 								carId: car._id,
 								used: false
 							};
-							return ApiService.updateUsedCar(carObj);
+							if (!car.tripIntermediary) {
+                return ApiService.updateUsedCar(carObj);
+              }
 						})
 						.then(() => {
 							displayCars();
@@ -121,48 +125,58 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				return pourcentage;
 			};
 			const timeTravelled = carArray => {
+				console.log('CALL of TIME TRAVELLED');
+				console.log('car array tim:e travellerd : : ' + JSON.stringify(carArray));
         return $q((resolve, reject) => {
-				$scope.carTrips = [];
-				carArray.map(car => {
-					ApiService.getCarTrip(car._id)
-						.then(tripResponse => {
-							tripResponse.trips.map(trip => {
-								if (typeof trip.arrivalDate === 'undefined') {
-								  car.tripId = trip._id;
-									car.tripDistance = trip.distance;
-									car.tripTime = trip.duration;
-									car.tripDepartureAddress = trip.departureAddress;
-									car.tripArrivalAddress = trip.arrivalAddress;
-									car.tripDepartureDate = new Date(trip.departureDate).getTime();
-									car.tripDurationValue = trip.durationValue;
-									car.tripDistanceValue = trip.distanceValue;
-									car.tripGroup = trip.groupName;
-									car.tripMarker = new google.maps.Marker({
-										position: new google.maps.LatLng(48.858093, 2.294694),
-										icon: carMarker,
-										draggable: false,
-										visible: false,
-									});
-									car.tripPolyline = new google.maps.Polyline({
-										path: [],
-										geodesic: true,
-										strokeColor: 'red',
-										strokeOpacity: 1.0,
-										strokeWeight: 2,
-										editable: false
-									});
-									$interval(() => {
-										car.timeDone = getTimeDone(car, trip);
-									}, 1000);
-									$scope.carTrips.push(car);
-                  if ($scope.carTrips.length === carArray.length) {
-                    resolve();
+				 // $scope.carTrips = [];
+
+				 carArray.map(cary => {
+
+
+            ApiService.getCarTrip(cary._id)
+              .then(tripResponse => {
+                tripResponse.trips.map(trip => {
+                  if (typeof trip.arrivalDate === 'undefined') {
+                    let car = Object.assign({}, cary);
+                    car.tripId = trip._id;
+                    car.tripDistance = trip.distance;
+                    car.tripTime = trip.duration;
+                    car.tripDepartureAddress = trip.departureAddress;
+                    car.tripArrivalAddress = trip.arrivalAddress;
+                    car.tripDepartureDate = new Date(trip.departureDate).getTime();
+                    car.tripDurationValue = trip.durationValue;
+                    car.tripDistanceValue = trip.distanceValue;
+                    car.tripGroup = trip.groupName;
+                    car.tripIntermediary = trip.intermediaryTrip;
+                      car.tripMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(48.858093, 2.294694),
+                        icon: carMarker,
+                        draggable: false,
+                        visible: false,
+                      });
+                    car.tripPolyline = new google.maps.Polyline({
+                      path: [],
+                      geodesic: true,
+                      strokeColor: 'red',
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                      editable: false
+                    });
+                    $interval(() => {
+                      car.timeDone = getTimeDone(car, trip);
+                    }, 1000);
+
+                    $scope.carTrips.push(car);
+
+                    if ($scope.carTrips.length === carArray.length) {
+                      resolve();
+                    }
                   }
-								}
-							});
-						})
-						.catch(err => console.log(err));
-				});
+                });
+              })
+              .catch(err => console.log(err));
+
+				  });
         });
 			};
 			displayCars()
@@ -219,16 +233,53 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 				const datetime = new Date($scope.trip.date.getFullYear(), $scope.trip.date.getMonth(), $scope.trip.date.getDate(),
 					$scope.trip.time.getHours(), $scope.trip.time.getMinutes());
 				if ($scope.selectedCar !== '' && $scope.selectedGroup === '') {
-					const dataTrip = {
-						departureAddress: $scope.trip.departureAddress.formatted_address,
-						arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-						departureDate: datetime.getTime(),
-						carId: $scope.selectedCar
-					};
-					ApiService.addTrip(dataTrip)
-						.then(trip => {
+					ApiService.getLastTrip($scope.selectedCar)
+						.then(response => {
+							if(response.trip === '') {
+                const dataTrip = {
+                  departureAddress: $scope.trip.departureAddress.formatted_address,
+                  arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+                  departureDate: datetime.getTime(),
+                  carId: $scope.selectedCar,
+                  intermediaryTrip: false
+                };
+                return ApiService.addTrip(dataTrip)
+							} else {
+								const dataTrip = {
+                  departureAddress: response.trip.arrivalAddress,
+                  arrivalAddress: $scope.trip.departureAddress.formatted_address,
+                  departureDate: new Date().getTime(),
+                  carId: $scope.selectedCar,
+									intermediaryTrip: true,
+								};
+                return ApiService.addTrip(dataTrip)
+							}
+						})
+						.then(tripResponse => {
 							$rootScope.modalInstance.close('close');
-							console.log(trip);
+							console.log(JSON.stringify(tripResponse.trip.intermediaryTrip));
+							if (tripResponse.trip.intermediaryTrip) {
+								const intermediaryTripArrTime = new Date(tripResponse.trip.departureDate).getTime() + tripResponse.trip.durationValue * 1000;
+								let nextTripDepDate = '';
+								console.log(intermediaryTripArrTime);
+								if (intermediaryTripArrTime < datetime) {
+                  nextTripDepDate = datetime.getTime();
+								} else {
+									const delay = new Date(intermediaryTripArrTime - datetime.getTime()).getTime();
+									nextTripDepDate = new Date(datetime.getTime() + delay).getTime();
+								}
+                const dataTrip = {
+                  departureAddress: $scope.trip.departureAddress.formatted_address,
+                  arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+                  departureDate: nextTripDepDate,
+                  carId: $scope.selectedCar,
+                  intermediaryTrip: false
+                };
+								ApiService.addTrip(dataTrip)
+									.then(respTrip => {
+									})
+									.catch(err => console.log(err));
+							}
 							const carObj = {
 								carId: $scope.selectedCar,
 								used: true
@@ -243,23 +294,87 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 							console.log(err);
 						});
 				} else if ($scope.selectedCar === '' && $scope.selectedGroup !== '') {
-					const groupTrip = {
-						departureAddress: $scope.trip.departureAddress.formatted_address,
-						arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
-						departureDate: datetime.getTime(),
-						groupName: $scope.selectedGroup
-					};
-					ApiService.addGroupTrip(groupTrip)
-						.then(trip => {
-							$rootScope.modalInstance.close('close');
-							console.log(trip);
-							return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
-						})
-						.then(groupUpdateResponse => {
-							console.log('group used update successfull');
-							$state.reload('mainpage');
-						})
-						.catch(err => console.log('error getting group trips client'));
+					let iterator = 0;
+					ApiService.getLastGroupTrip({groupName: $scope.selectedGroup})
+						.then(response => {
+							console.log(response);
+							let tempIntermediaryArrDate = [];
+							response.trips.map(trip => {
+								iterator++;
+								console.log(trip);
+								if (trip === null) {
+									console.log(iterator);
+									console.log(response.trips.length);
+									if (iterator === response.trips.length) {
+                    $rootScope.modalInstance.close('close');
+                    const groupTrip = {
+                      departureAddress: $scope.trip.departureAddress.formatted_address,
+                      arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+                      departureDate: datetime.getTime(),
+                      groupName: $scope.selectedGroup,
+											intermediaryTrip: false
+                    };
+                    ApiService.addGroupTrip(groupTrip)
+                      .then(trip => {
+                        console.log('Group trips :: ' + JSON.stringify(trip));
+                        return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
+                      })
+                      .then(groupUpdateResponse => {
+                        console.log('group used update successfull');
+
+												$state.reload('mainpage');
+                      })
+                      .catch(err => console.log('error getting group trips client'));
+									}
+								} else {
+                  const dataTrip = {
+                    departureAddress: trip.arrivalAddress,
+                    arrivalAddress: $scope.trip.departureAddress.formatted_address,
+                    departureDate: new Date().getTime(),
+                    carId: trip.carId,
+                    intermediaryTrip: true,
+                  };
+
+                  console.log(dataTrip);
+                  ApiService.addTrip(dataTrip)
+										.then(tripResponse => {
+                      $rootScope.modalInstance.close('close');
+                      const intermediaryTripArrTime = new Date(tripResponse.trip.departureDate).getTime() + tripResponse.trip.durationValue * 1000;
+                      tempIntermediaryArrDate.push(intermediaryTripArrTime);
+                      if (tempIntermediaryArrDate.length === response.trips.length) {
+                        let nextTripDepDate = '';
+                        const arrayMaxDate = Math.max.apply(null, tempIntermediaryArrDate);
+                        if (arrayMaxDate < datetime) {
+                          nextTripDepDate = datetime.getTime();
+                        } else {
+                          const delay = new Date(arrayMaxDate - datetime.getTime()).getTime();
+                          nextTripDepDate = new Date(datetime.getTime() + delay).getTime();
+                        }
+                        const groupTrip = {
+                          departureAddress: $scope.trip.departureAddress.formatted_address,
+                          arrivalAddress: $scope.trip.arrivalAddress.formatted_address,
+                          departureDate: nextTripDepDate,
+                          groupName: $scope.selectedGroup,
+													intermediaryTrip: false
+                        };
+                        ApiService.addGroupTrip(groupTrip)
+													.then(trip => {
+														console.log('Group trips :: ' + JSON.stringify(trip));
+														return ApiService.updateGroupUsedCar({groupName: groupTrip.groupName});
+													})
+                          .then(groupUpdateResponse => {
+                            console.log('group used update successfull');
+														$state.reload('mainpage');
+                          })
+                          .catch(err => console.log('error getting group trips client'));
+											}
+                    })
+										.catch(err => {
+											console.log('error adding intermediary trip time');
+										});
+								}
+							});
+						});
 				}
 			};
 			$scope.group = () => {
