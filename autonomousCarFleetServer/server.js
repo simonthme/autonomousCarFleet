@@ -13,7 +13,7 @@ const config = require('./config/config');
 const routes = require('./api/routes/index');
 mongoose.Promise = require('bluebird');
 
-const connection = mongoose.connect(config.constant.mongoUrl)
+mongoose.connect(config.constant.mongoUrl)
   .then(console.log('Connection OK !!'))
   .catch(err => console.log('Connection ERROR !!' + err));
 

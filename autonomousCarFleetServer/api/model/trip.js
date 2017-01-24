@@ -4,19 +4,19 @@
 const mongoose = require('mongoose');
 
 const tripSchema = new mongoose.Schema({
-	accountId: String,
-	carId: String,
-	groupName: String,
-	departureAddress: String,
-	arrivalAddress: String,
-	distance: String,
-	distanceValue: Number,
-	duration: String,
-	durationValue: Number,
-	departureDate: Date,
-	arrivalDate: Date,
-	intermediaryTrip: Boolean,
-	creationDate: Date
+  accountId: String,
+  carId: String,
+  groupName: String,
+  departureAddress: String,
+  arrivalAddress: String,
+  distance: String,
+  distanceValue: Number,
+  duration: String,
+  durationValue: Number,
+  departureDate: Date,
+  arrivalDate: Date,
+  intermediaryTrip: Boolean,
+  creationDate: Date
 });
 
 module.exports = mongoose.model('Trip', tripSchema);
