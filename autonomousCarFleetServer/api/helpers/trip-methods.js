@@ -12,37 +12,36 @@ const carMethods = require('./car-methods');
 const tripMethods = {
   newTrip(trip) {
     return new Promise((resolve, reject) => {
-      console.log(trip);
       const date = new Date();
       let group = '';
       if (trip.groupName) {
-        console.log('group if');
-        console.log(trip.groupName)
         group = trip.groupName;
       }
       distance.get({
         origin: trip.departureAddress,
         destination: trip.arrivalAddress
       }, (err, data) => {
-      // const tripData =
-      // console.log('console' + JSON.stringify(tripData));
-        const newTrip = new Trip({
-          accountId: trip.accountId,
-          carId: trip.carId,
-          groupName: '',
-          departureAddress: data.origin,
-          arrivalAddress: data.destination,
-          distance: data.distance,
-          distanceValue: data.distanceValue,
-          duration: data.duration,
-          durationValue: data.durationValue,
-          departureDate: trip.departureDate,
-          intermediaryTrip: trip.intermediaryTrip,
-          creationDate: date
-        });
-        newTrip.save()
-          .then(tripData => resolve(tripData))
-          .catch(err => reject(err));
+        if (err) {
+          console.log(err);
+        } else {
+          const newTrip = new Trip({
+            accountId: trip.accountId,
+            carId: trip.carId,
+            groupName: group,
+            departureAddress: data.origin,
+            arrivalAddress: data.destination,
+            distance: data.distance,
+            distanceValue: data.distanceValue,
+            duration: data.duration,
+            durationValue: data.durationValue,
+            departureDate: trip.departureDate,
+            intermediaryTrip: trip.intermediaryTrip,
+            creationDate: date
+          });
+          newTrip.save()
+            .then(tripData => resolve(tripData))
+            .catch(err => reject(err));
+        }
       });
     });
   },
@@ -57,33 +56,35 @@ const tripMethods = {
               origin: trip.departureAddress,
               destination: trip.arrivalAddress
             }, (err, data) => {
-              const newTrip = new Trip({
-                accountId: trip.accountId,
-                carId: car._id,
-                groupName: trip.groupName,
-                departureAddress: data.origin,
-                arrivalAddress: data.destination,
-                distance: data.distance,
-                distanceValue: data.distanceValue,
-                duration: data.duration,
-                durationValue: data.durationValue,
-                departureDate: trip.departureDate,
-                intermediaryTrip: trip.intermediaryTrip,
-                creationDate: date
-              });
-              newTrip.save()
-                .then(tripData => {
-                  console.log(JSON.stringify(tripData));
-                  tempTrips.push(tripData);
-                  callback();
-                })
-                .catch(err => reject(err));
+              if (err) {
+                console.log(err);
+              } else {
+                const newTrip = new Trip({
+                  accountId: trip.accountId,
+                  carId: car._id,
+                  groupName: trip.groupName,
+                  departureAddress: data.origin,
+                  arrivalAddress: data.destination,
+                  distance: data.distance,
+                  distanceValue: data.distanceValue,
+                  duration: data.duration,
+                  durationValue: data.durationValue,
+                  departureDate: trip.departureDate,
+                  intermediaryTrip: trip.intermediaryTrip,
+                  creationDate: date
+                });
+                newTrip.save()
+                  .then(tripData => {
+                    tempTrips.push(tripData);
+                    callback();
+                  })
+                  .catch(err => reject(err));
+              }
             });
           }, err => {
             if (err) {
               reject();
             } else {
-              console.log(JSON.stringify(tempTrips));
               resolve(tempTrips);
             }
           });
@@ -116,7 +117,6 @@ const tripMethods = {
           async.each(cars, (car, callback) => {
             this.findOneLastTrip(car._id)
               .then(trip => {
-                console.log(trip);
                 tempLastGroupTrips.push(trip);
                 callback();
               });
@@ -125,7 +125,6 @@ const tripMethods = {
               console.log(err);
               reject();
             } else {
-              console.log(JSON.stringify(tempLastGroupTrips));
               resolve(tempLastGroupTrips);
             }
           });

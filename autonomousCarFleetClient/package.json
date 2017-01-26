@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gulp-sass": "^3.0.0"
+    "gulp-connect": "^5.0.0",
+    "gulp-open": "^2.0.0",
+    "gulp-sass": "^3.0.0",
+    "gulp-xo": "^0.14.0"
   },
   "devDependencies": {
     "bower": "^1.8.0",
@@ -20,6 +23,10 @@
     "envs": [
       "browser",
       "node"
+    ],
+    "globals": [
+      "google",
+      "angular"
     ],
     "space": 2,
     "rules": {

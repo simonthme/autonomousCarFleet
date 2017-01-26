@@ -17,6 +17,8 @@
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "google-distance": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-xo": "^0.14.0",
     "jwt-simple": "latest",
     "mongoose": "^4.6.6",
     "mongoose-auto-increment": "^5.0.1",
@@ -27,9 +29,6 @@
     "esnext": true,
     "envs": [
       "node"
-    ],
-    "globals": [
-      "google"
     ],
     "space": 2,
     "rules": {

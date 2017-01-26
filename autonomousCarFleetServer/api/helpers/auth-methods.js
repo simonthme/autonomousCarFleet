@@ -8,7 +8,7 @@ const Account = require('../model/account');
 
 const authMethods = {
   findOne(userName) {
-    return Account.findOne(userName).exec();
+    return Account.findOne({userName}).exec();
   },
   saveAccount(account) {
     return new Promise((resolve, reject) => {
@@ -19,7 +19,6 @@ const authMethods = {
         password: account.password,
         creationDate: date
       };
-      console.log(JSON.stringify(accountData));
       const newAccount = new Account(accountData);
       newAccount.save()
         .then(accountData => resolve(accountData))

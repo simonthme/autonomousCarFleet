@@ -13,7 +13,6 @@ module.exports = function () {
   router.put('/', passport.authenticate('jwt', {session: false}),
     (req, res) => {
       req.body.accountId = req.header.accountId;
-      console.log(req.body);
       if (!req.body.accountId || !req.body.carId) {
         res.json({success: false, msg: 'body is missing'});
       } else {
@@ -34,7 +33,6 @@ module.exports = function () {
   router.put('/group', passport.authenticate('jwt', {session: false}),
     (req, res) => {
       req.body.accountId = req.header.accountId;
-      console.log('group body' + JSON.stringify(req.body));
       if (!req.body.accountId || !req.body.groupName) {
         res.json({success: false, msg: 'body is missing'});
       } else {
@@ -72,7 +70,6 @@ module.exports = function () {
     (req, res) => {
       tripMethods.findOneLastTrip(req.params.id)
         .then(trip => {
-          console.log('last TRIP :: ' + JSON.stringify(trip));
           if (trip) {
             res.json({success: true, msg: 'Successfully found last trip',
               trip});
@@ -87,11 +84,9 @@ module.exports = function () {
     });
   router.post('/last', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      console.log('GETTING GROUP last Trips' + req.body);
       const accountId = req.header.accountId;
       tripMethods.findGroupLastTrip(accountId, req.body.groupName)
         .then(trips => {
-          console.log('last group TRIPS :: ' + JSON.stringify(trips));
           if (trips) {
             res.json({success: true, msg: 'Successfully found last group trips',
               trips});
@@ -108,11 +103,11 @@ module.exports = function () {
     (req, res) => {
       tripMethods.findAllTrips()
         .then(tripsArray => {
-          if (tripsArray.length) {
+          if (tripsArray.length > 0) {
             res.json({success: true, msg: 'Successfully found all trips',
               trips: tripsArray});
           } else {
-            res.json({succes: false, msg: 'Trips not found'});
+            res.json({success: false, msg: 'Trips not found'});
           }
         })
         .catch(err => {
@@ -122,7 +117,7 @@ module.exports = function () {
     });
   router.get('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         tripMethods.findOneTrip(req.params.id)
@@ -142,11 +137,11 @@ module.exports = function () {
     });
   router.delete('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         tripMethods.deleteOneTrip(req.params.id)
-          .then(deletedTrip => {
+          .then(() => {
             res.json({success: true, msg: 'Trip deleted successfully'});
           })
           .catch(err => {
@@ -157,8 +152,7 @@ module.exports = function () {
     });
   router.patch('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      console.log('update trip');
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         tripMethods.findOneTrip(req.params.id)
@@ -167,7 +161,7 @@ module.exports = function () {
               trip.arrivalDate = req.body.arrivalDate;
               console.log('TRIP ARRIVAL DATE: ' + trip.arrivalDate);
               return tripMethods.updateOneTrip(trip._id, trip);
-            } else {
+            } else { // eslint-disable-line no-else-return
               res.json({success: false, msg: 'trip not found'});
             }
           })

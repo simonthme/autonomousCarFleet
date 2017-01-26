@@ -11,21 +11,24 @@ module.exports = function () {
   const router = new express.Router();
   router.patch('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         carMethods.findOneCar(req.params.id)
           .then(car => {
             if (car) {
               car.groupName = req.body.groupName;
-              return carMethods.updateOneCar(car._id, car);
+              carMethods.updateOneCar(car._id, car)
+                .then(() => {
+                  res.json({success: true, msg: 'Successfully updated car'});
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.json({success: false, msg: 'Error updating car'});
+                });
             } else {
               res.json({success: false, msg: 'car not found'});
             }
-          })
-          .then(updateResponse => {
-            console.log(updateResponse);
-            res.json({success: true, msg: 'Successfully updated car'});
           })
           .catch(err => {
             console.log(err);
@@ -47,25 +50,24 @@ module.exports = function () {
             res.json({success: false, msg: 'No cars found in group'});
           }
         })
-        .then(updateResponse => {
+        .then(() => {
           res.json({success: true, msg: 'successfully updated cars in group'});
         })
         .catch(err => {
+          console.log(err);
           res.json({success: false, msg: 'error updating cars in group'});
         });
     });
   router.post('/', passport.authenticate('jwt', {session: false}),
     (req, res) => {
       const accountId = req.header.accountId;
-      console.log(req.body.groupName);
       carMethods.findGroupCars(accountId, req.body.groupName)
         .then(carsArray => {
-          console.log(carsArray);
           if (carsArray.length > 0) {
             res.json({success: true, msg: 'Successfully found group cars',
-              carsArray});
+              cars: carsArray});
           } else {
-            res.json({succes: false, msg: 'Cars not found'});
+            res.json({success: false, msg: 'Cars not found'});
           }
         })
         .catch(err => {

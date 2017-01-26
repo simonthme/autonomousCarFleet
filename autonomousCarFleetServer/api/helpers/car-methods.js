@@ -25,9 +25,6 @@ const carMethods = {
   findAllCars(id) {
     return Car.find({accountId: id}).exec();
   },
-  // findAccountCars(accountId) {
-  //   return Car.find({accountId: accountId}).exec();
-  // },
   findOneCar(id) {
     return Car.findOne({_id: id}).exec();
   },
@@ -38,7 +35,7 @@ const carMethods = {
     return Car.update({_id: id}, car).exec();
   },
   findGroupCars(id, groupName) {
-    return Car.find({id, groupName}).exec();
+    return Car.find({accountId: id, groupName}).exec();
   }
 };
 

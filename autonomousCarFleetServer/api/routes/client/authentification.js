@@ -11,14 +11,11 @@ const authMethods = require('../../helpers/auth-methods');
 module.exports = function () {
   const router = express.Router();
   router.put('/register', (req, res) => {
-    console.log('IN ROUTER REGISTER');
     if (!req.body.userName || !req.body.password) {
-      console.log('missing password or username');
       res.json({success: false, msg: 'Enter username or password'});
     } else {
       authMethods.saveAccount(req.body)
         .then(account => {
-          console.log('client created' + JSON.stringify(account));
           res.json({
             success: true, msg: 'Succesfully created user', accountData: account
           });
@@ -31,10 +28,8 @@ module.exports = function () {
     }
   });
   router.post('/login', (req, res) => {
-    console.log('user name ' + req.body.userName);
     authMethods.findOne(req.body.userName)
       .then(account => {
-        console.log(account);
         if (account) {
           if (account.password === null || account.password === '' ||
             account.password === 'undefined') {
@@ -44,7 +39,6 @@ module.exports = function () {
               if (isMatch && !err) {
                 const token = jwt.encode({userName: account.userName},
                   config.constant.jwtSecret);
-                console.log('Login Success');
                 res.json({
                   success: true,
                   msg: 'Login Successful',
@@ -52,13 +46,11 @@ module.exports = function () {
                   accountData: account
                 });
               } else {
-                console.log('Wrong Password');
                 res.json({success: false, msg: 'Wrong password'});
               }
             });
           }
         } else {
-          console.log('Wrong Email');
           res.send({success: false, msg: 'Wrong email'});
         }
       })

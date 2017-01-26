@@ -10,7 +10,7 @@ const config = require('./config');
 
 const methods = {
   findOne(id) {
-    return Account.findOne(id).exec();
+    return Account.findOne({id}).exec();
   }
 };
 
@@ -18,8 +18,8 @@ module.exports = passport => {
   const opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
   opts.secretOrKey = config.constant.jwtSecret;
-  passport.use(new JwtStrategy(opts, (jwtpayload, done) => {
-    methods.findOne(jwtpayload.sub)
+  passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
+    methods.findOne(jwtPayload.sub)
       .then(account => {
         if (account) {
           done(null, account);

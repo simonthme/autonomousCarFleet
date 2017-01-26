@@ -13,7 +13,6 @@ module.exports = function () {
   router.put('/', passport.authenticate('jwt', {session: false}),
     (req, res) => {
       req.body.accountId = req.header.accountId;
-      console.log('put car route: ' + JSON.stringify(req.body));
       if (!req.body.name || !req.body.accountId) {
         res.json({success: false, msg: 'body is missing'});
       } else {
@@ -34,16 +33,14 @@ module.exports = function () {
     });
   router.get('/', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      console.log('in cars get');
       const accountId = req.header.accountId;
-      console.log(accountId);
       carMethods.findAllCars(accountId)
         .then(carsArray => {
           if (carsArray.length > 0) {
             res.json({success: true, msg: 'Successfully found all cars',
-              carsArray});
+              cars: carsArray});
           } else {
-            res.json({succes: false, msg: 'Cars not found'});
+            res.json({success: false, msg: 'Cars not found'});
           }
         })
         .catch(err => {
@@ -53,8 +50,7 @@ module.exports = function () {
     });
   router.get('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      console.log(req.params.id);
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         carMethods.findOneCar(req.params.id)
@@ -71,35 +67,13 @@ module.exports = function () {
           });
       }
     });
-    // router.get('/', passport.authenticate('jwt', {session: false}),
-    // (req, res) => {
-    //   console.log('before account id');
-    //   //const accountId = req.header.accountId;
-    //   console.log(accountId);
-    //   // carMethods.findAccountCars(accountId)
-    //   //   .then(carArray => {
-    //   //     if (carArray.length > 0) {
-    //   //       res.json({success: true, msg:'Successfully found cars
-    // for current account', carArray: carArray});
-    //   //     } else {
-    //   //       res.json({success: false, msg:'No cars found'});
-    //   //     }
-    //   //   })
-    //   //   .catch(err => {
-    //   //     console.log(err);
-    //   //     res.json({success: false, msg:'Error finding cars per account'
-    // });
-    //   //   })
-    //
-    // });
   router.delete('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      console.log(req.params.id);
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         carMethods.deleteOneCar(req.params.id)
-          .then(deletedCar => {
+          .then(() => {
             res.json({success: true, msg: 'Car deleted successfully'});
           })
           .catch(err => {
@@ -110,7 +84,7 @@ module.exports = function () {
     });
   router.patch('/:id', passport.authenticate('jwt', {session: false}),
     (req, res) => {
-      if (!req.params.id) {
+      if (!req.params.id) { // eslint-disable-line no-negated-condition
         res.json({success: false, msg: 'missing params'});
       } else {
         carMethods.findOneCar(req.params.id)
@@ -118,7 +92,7 @@ module.exports = function () {
             if (car) {
               car.used = req.body.used;
               return carMethods.updateOneCar(car._id, car);
-            } else {
+            } else { // eslint-disable-line no-else-return
               res.json({success: false, msg: 'car not found'});
             }
           })
