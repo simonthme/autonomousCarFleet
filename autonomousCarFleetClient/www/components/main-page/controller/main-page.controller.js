@@ -125,7 +125,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 			};
 			const timeTravelled = carArray => {
 				        return $q((resolve, reject) => {
-				 // $scope.carTrips = [];
+				  $scope.carTrips = [];
 
 				 carArray.map(cary => {
 
@@ -329,6 +329,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
                     arrivalAddress: $scope.trip.departureAddress.formatted_address,
                     departureDate: new Date().getTime(),
                     carId: trip.carId,
+										groupName: $scope.selectedGroup,
                     intermediaryTrip: true,
                   };
 
@@ -417,7 +418,7 @@ angular.module('starter.mainpage').controller('MainPageCtrl',
 											$scope.cars.push(car);
 										}
 									});
-									timeTravelled(responseCar.cars)
+								 timeTravelled(responseCar.cars)
 					.then(() => {
 						$rootScope.$broadcast('initMap');
 						$scope.carTrips.map(carTrip => {

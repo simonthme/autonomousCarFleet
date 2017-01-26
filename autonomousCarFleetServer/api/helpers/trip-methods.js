@@ -14,6 +14,12 @@ const tripMethods = {
     return new Promise((resolve, reject) => {
       console.log(trip);
       const date = new Date();
+      let group = '';
+      if (trip.groupName) {
+        console.log('group if');
+        console.log(trip.groupName)
+        group = trip.groupName;
+      }
       distance.get({
         origin: trip.departureAddress,
         destination: trip.arrivalAddress

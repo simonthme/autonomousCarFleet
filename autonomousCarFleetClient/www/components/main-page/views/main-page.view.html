@@ -100,9 +100,9 @@
                  </div>
                </div>
                <div>
-                 <label ng-if="!carTrip.intermediaryTrip">
+                 <label ng-if="!carTrip.tripIntermediary">
                        Current trip:</label>
-                   <label ng-if="carTrip.intermediaryTrip">
+                   <label ng-if="carTrip.tripIntermediary">
                        Intermediary trip:</label>
                      <div class="progress">
                        <div class="progress-bar progress-bar-striped active"
@@ -131,7 +131,8 @@
                          <td>{{carTrip.tripTime}}</td>
                        </tr>
                     </table>
-               </div>
+                </div>
+                <button class="btn btn-danger" ng-click="endTrip(carTrip)">Terminer le trajet</button>
             </div>
           </div>
         </section>
