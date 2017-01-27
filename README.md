@@ -13,6 +13,13 @@ To install all modules and run server:
 npm install (in the client or server repository)
 node server.js (to start server)
 ```
+On client side:
+```
+bower install
+gulp
+xo
+```
+Local server starts on port 8080.
 
 ## Usage
 Use postman or a navigator to execute the http requests. 
