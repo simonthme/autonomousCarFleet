@@ -11,6 +11,7 @@ git clone https://github.com/simonthme/autonomousCarFleet.git
 To install all modules and run server:
 ```
 npm install (in the client or server repository)
+xo
 node server.js (to start server)
 ```
 On client side:
